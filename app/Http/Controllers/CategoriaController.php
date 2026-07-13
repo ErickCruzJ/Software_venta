@@ -84,3 +84,7 @@ class CategoriaController extends Controller
             ->with('success', 'Categoria eliminada correctamente');
     }
 }
+
+
+
+
