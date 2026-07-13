@@ -1,29 +1,31 @@
 import { useMemo, useState } from 'react';
 import { router } from '@inertiajs/react';
-import { Edit, Plus, Trash2 } from 'lucide-react';
+import { Plus} from 'lucide-react';
 
 import MainLayout from '@/components/layout/MainLayout';
 import Toolbar from '@/components/Toolbar/Toolbar';
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
-import SearchInput from '@/components/Inputs/SearchInput';
-import StatusBadge from '@/components/Badge/StatusBadge';
+import SearchInput from  '@/components/Inputs/SearchInput';
+import StatusBadge from  '@/components/Badge/StatusBadge';
 import DataTable from '@/components/Table/DataTable';
+import EditButton from '@/components/Buttons/EditButton';
+import DeleteButton from '@/components/Buttons/DeleteButton';
 
 interface Categoria {
     id_categoria: number;
     nombre: string;
     descripcion: string | null;
-    estado: boolean;
+    estado: boolean; 
 }
 
-interface IndexProps {
+interface IndexProps{
     categorias: Categoria[];
 }
 
 export default function Index({ categorias }: IndexProps) {
-    const [search, setSearch] = useState('');
+    const[search, setSearch] = useState('');
 
-    const categoriasFiltradas = useMemo(() => {
+    const categoriasFiltradas = useMemo(() =>{
         const termino = search.toLowerCase().trim();
 
         if (!termino) {
@@ -32,24 +34,24 @@ export default function Index({ categorias }: IndexProps) {
 
         return categorias.filter((categoria) => {
             const nombre = categoria.nombre.toLowerCase();
-
+            
             const descripcion =
                 categoria.descripcion?.toLowerCase() ?? '';
 
-            return (
-                nombre.includes(termino) ||
-                descripcion.includes(termino)
-            );
+                return(
+                    nombre.includes(termino) ||
+                    descripcion.includes(termino)
+                );
         });
     }, [categorias, search]);
 
-    function editarCategoria(id: number) {
-        router.visit(`/categorias/${id}/edit`);
+    function editarCategoria (id: number) {
+        router.visit(`/categoria/${id}/edit`);
     }
 
     function eliminarCategoria(categoria: Categoria) {
         const confirmar = window.confirm(
-            `¿Deseas eliminar la categoría "${categoria.nombre}"?`
+            `¿Deseas eliminar la categoria "${categoria.nombre}"?`
         );
 
         if (!confirmar) {
@@ -92,33 +94,16 @@ export default function Index({ categorias }: IndexProps) {
             label: 'Acciones',
             render: (categoria: Categoria) => (
                 <div className="flex items-center gap-2">
-                    <button
-                        type="button"
+                    <EditButton
                         onClick={() =>
                             editarCategoria(categoria.id_categoria)
                         }
-                        className="
-                            rounded-lg p-2 text-blue-600
-                            transition hover:bg-blue-50
-                        "
-                        title="Editar categoría"
-                    >
-                        <Edit size={18} />
-                    </button>
-
-                    <button
-                        type="button"
+                    />
+                    <DeleteButton
                         onClick={() =>
                             eliminarCategoria(categoria)
-                        }
-                        className="
-                            rounded-lg p-2 text-red-600
-                            transition hover:bg-red-50
-                        "
-                        title="Eliminar categoría"
-                    >
-                        <Trash2 size={18} />
-                    </button>
+                         }
+                    />
                 </div>
             ),
         },
@@ -129,22 +114,23 @@ export default function Index({ categorias }: IndexProps) {
             <div className="space-y-6">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">
-                        Categorías
+                        Categorias
                     </h1>
-
+                    
                     <p className="mt-1 text-sm text-gray-500">
-                        Administra las categorías de los productos.
+                        Administra las categorias de los productos.
                     </p>
                 </div>
 
-                <Toolbar title="Listado de categorías">
+                <Toolbar title="Lista de caregorias">
                     <SearchInput
                         value={search}
                         onChange={setSearch}
-                        placeholder="Buscar categoría..."
+                        placeholder="Buscar categoria..."
                     />
 
                     <PrimaryButton
+                        type='button' 
                         onClick={() =>
                             router.visit('/categorias/create')
                         }
@@ -152,7 +138,7 @@ export default function Index({ categorias }: IndexProps) {
                         <span className="flex items-center gap-2">
                             <Plus size={18} />
 
-                            Nueva categoría
+                            Nueva categoria
                         </span>
                     </PrimaryButton>
                 </Toolbar>
