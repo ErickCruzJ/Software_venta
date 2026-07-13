@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Categoria extends Model
 {
-    use HasFactory;
-    
-    protected $table = 'categorias';
 
     protected $primarykey = 'id_categoria';
 
@@ -17,14 +14,11 @@ class Categoria extends Model
         'descripcion',
         'estado',
     ];
-    protecred function casts():array
+    protected function casts():array
     {
         return [
             'estado' => 'boolean',
-        ]
+        ];
     }
-    public function productos(): string
-    {
-        return 'id_categoria';
-    }
+
 }

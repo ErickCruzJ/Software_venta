@@ -16,7 +16,7 @@ class CategoriaController extends Controller
      */
     public function index():Response
     {
-       $categorias = Categoria::orderBy('nombre')->get();
+        $categorias = Categoria::orderBy('nombre')->get();
 
        return Inertia::render('Categorias/Index',[
             'categorias' => $categorias,
