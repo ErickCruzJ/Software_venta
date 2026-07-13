@@ -5,29 +5,28 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoriaRequest;
 use App\Http\Requests\UpdateCategoriaRequest;
 use App\Models\Categoria;
-use App\Services\CategoriaService;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class CategoriaController extends Controller
 {
-    protected CategoriaService $categoriaService;
-    public function __construct(CategoriaService $categoriaService)
-    {
-        $this->categoriaService = $categoriaService;
-    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index():Response
     {
-        $categorias = $this->categoriaService->obteneterCategorias();
-        return Inertia::render('Categorias/Index',['categorias' => $categorias]);
+       $categorias = Categoria::orderBy('nombre')->get();
+
+       return Inertia::render('Categorias/Index',[
+            'categorias' => $categorias,
+       ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Categorias/Create');
     }
@@ -35,10 +34,13 @@ class CategoriaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategoriaRequest $request)
+    public function store(StoreCategoriaRequest $request): RedirectResponse
     {
-        $this->categoriaService->crear($request->validated());
-        return redirect()->route('categorias.index')->with('success','Categoria registrada correctamente');
+       Categoria::create($request->validated());
+
+       return redirect()
+            ->route('categorias.index')
+            ->with('success', 'Categoria registrada correctamente.');
     }
 
     /**
@@ -52,7 +54,7 @@ class CategoriaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Categoria $categoria)
+    public function edit(Categoria $categoria): Response
     {
         return Inertia::render('Categorias/Edit',[
             'categoria' => $categoria
@@ -62,18 +64,23 @@ class CategoriaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoriaRequest $request, Categoria $categoria)
+    public function update(UpdateCategoriaRequest $request, Categoria $categoria): RedirectResponse
     {
-        $this->categoriaService->actualizar($categoria, $request->validated());
-        return redirect()->route('categorias.index')->with('success','Categoria actualizada correctamente.');     
+        $categoria -> update($request->validated());
+        return redirect()
+            ->route('categorias.index')
+            ->with('success', 'Categoria actualizada correctamente.');     
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categoria $categoria)
+    public function destroy(Categoria $categoria): RedirectResponse
     {
-        $this->categoriaService->eliminar($categoria);
-        return redirect()->route('categorias.index')->with('success','Categoria eliminada correctamente.');
+        $categoria->delete();
+
+        return redirect()
+            ->route('categorias.index')
+            ->with('success', 'Categoria eliminada correctamente');
     }
 }
