@@ -50,33 +50,18 @@ export default function Index({ categorias }: IndexProps) {
     }
 
     function eliminarCategoria(categoria: Categoria) {
-       console.log('CLICK ELIMINAR', categoria);
+       const confirmar = window.confirm(
+        `¿Deseas eliminar la categoria "${categoria.nombre}"?`
+       );
 
-    const confirmar = window.confirm(
-        `¿Deseas eliminar la categoría "${categoria.nombre}"?`
-    );
-
-    console.log('CONFIRMAR:', confirmar);
-
-    if (!confirmar) {
+       if (!confirmar) {
         return;
-    }
+       }
 
-    console.log(
-        'URL DELETE:',
+       router.delete(
         `/categorias/${categoria.id_categoria}`
-    );
+       )
 
-    router.delete(
-        `/categorias/${categoria.id_categoria}`,
-        {
-            onStart: () => console.log('DELETE INICIADO'),
-            onSuccess: () => console.log('DELETE EXITOSO'),
-            onError: (errors) =>
-                console.log('ERROR DELETE:', errors),
-            onFinish: () => console.log('DELETE FINALIZADO'),
-        }
-    );
     }
 
     const columns = [

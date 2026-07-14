@@ -40,10 +40,10 @@ export default function Edit({ categoria}: EditProps){
                         onClick={()=>
                             router.visit('/categorias')
                         }
-                        className='mb-4 flex items-center gap-2
+                        className="mb-4 flex items-center gap-2
                         text-sm text-gray-500
-                        trasition hover:text-gray-900
-                        '
+                        transition hover:text-gray-900
+                        "
                     >
                         <ArrowLeft size={18} />
                         Regresar
@@ -53,7 +53,7 @@ export default function Edit({ categoria}: EditProps){
                         Editar Categoria
                     </h1>
 
-                    <p className='mt-1 text-sm text-sm text-gray-500'>
+                    <p className='mt-1 text-sm text-gray-500'>
                         Modificar la informacion de la categoría.
                     </p>
                 </div>
