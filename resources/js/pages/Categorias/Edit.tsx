@@ -72,6 +72,10 @@ export default function Edit({ categoria}: EditProps){
                             setData('nombre', e.target.value)
                         }
                         error={errors.nombre}
+                        required
+                        maxLength={100}
+                        pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\S]+"
+                        title="Solo se permiten letras, números y espacios"
                     />
                     <FormTextarea
                         label="Descripcion"

@@ -27,17 +27,32 @@ class StoreCategoriaRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'unique:categorias,nombre'
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+/u',
+                'unique:categorias,nombre',
             ],
             'descripcion' => [
                 'nullable',
                 'string',
-                'max:255'
+                'max:255',
+                'regex: /^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ0-9\s.,()-]*$/u'
             ],
             'estado' => [
                 'required',
                 'boolean'
             ],
+        ];
+    }
+    public function messages(): array
+    {
+        return[
+            'nombre.required' => 'El nombre de la categoria es obligatorio.',
+            'nombre.max' => 'El nombre no puede superar los 100 caracteres.',
+            'nombre.regex' => 'El nombre contiene carateres no permitidos. Solo se aceptan letras, números y espacios. ',
+            'nombre.unique' =>  'Ya existe una categoria con este nombre. ',
+            'descripcion.max' => 'La descripcion no puede superar los 255 carateres.',
+            'descripcion.regex' => 'La descripción contiene caracteres no permitidos',
+            'estado.required' => 'El estado es obligatorio. ',
+            'estado.boolean' => 'El estado seleccionado no es válido. ',
         ];
     }
 }

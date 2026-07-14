@@ -28,6 +28,7 @@ class UpdateCategoriaRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+$/u',
                 Rule::unique('categorias','nombre')->ignore($this->categoria, 'id_categoria')
             ],
             'descripcion' => [

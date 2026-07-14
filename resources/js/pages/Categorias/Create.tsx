@@ -1,4 +1,4 @@
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 import { router, useForm } from '@inertiajs/react';
 import { ArrowLeft, Save } from 'lucide-react';
 
@@ -9,6 +9,8 @@ import FormTextarea from '@/components/Inputs/FormTextarea';
 import FormCheckbox from '@/components/Inputs/FormCheckbox';
 
 export default function Create() {
+    const [nombreError, setNombreError] = useState('');
+    const [descripcionErrores, setDescripcionErrores] = useState('');
     const { data, setData, post, processing, errors } = useForm({
         nombre: '',
         descripcion: '',
@@ -20,7 +22,55 @@ export default function Create() {
 
         post('/categorias');
     }
+
+    function validarNombre(nombre: string): boolean{
+        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ0-9\s]+$/u;
+
+        if (!nombre.trim()){
+            setNombreError(
+                'El nombre de la categoria es obligatorio.'
+            );
+            return false;
+        }
+
+        if (!regex.test(nombre)){
+            setNombreError(
+                'El nombre contiene carateres no permitidos. Solo se aceptan letras, numeros y espacios'
+            );
+            return false;
+        }
+        setNombreError('');
+        return true;
+    }
     
+    function validarDescripcion(descripcion: string): boolean{
+        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ0-9\s.,()-]*$/u;
+
+        if (!regex.test(descripcion)) {
+            setDescripcionErrores(
+                'La descripción contiene caracteres no permitidos. '
+            );
+            return false;
+        }
+
+        setDescripcionErrores('');
+        return true;
+    }
+
+    function submite (e:FormEvent) {
+        e.preventDefault();
+
+        const nombreValido = validarNombre(data.nombre);
+
+        const descripcionValida = validarDescripcion(data.descripcion);
+
+        if (!nombreValido || !descripcionValida){
+            return;
+        }
+
+        post('/categorias');
+    }
+
     return (
         <MainLayout>
             <div className='mx-auto max-w-3xl space-y-6'>
@@ -51,26 +101,31 @@ export default function Create() {
                         label="Nombre"
                         type="text"
                         value={data.nombre}
-                        onChange={(e) => 
-                            setData (
-                                'nombre', e.target.value
-                            )
+                        onChange={(e) => {
+                            const valor = e.target.value;
+
+                            setData('nombre', valor);
+                            validarNombre(valor);
+                        }}
+                        error={
+                            nombreError || errors.nombre
                         }
-                        error={errors.nombre}
-                        placeholder='Ej.Bebidas'
+                        maxLength={100}
                     />
                     <FormTextarea
                         label="Descripción"
                         value={data.descripcion}
-                        onChange={(e) => 
-                            setData(
-                                'descripcion',
-                                e.target.value
-                            )
+                        onChange={(e) => {
+                            const valor = e.target.value;
+
+                            setData('descripcion', valor);
+                            validarDescripcion(valor);
+                        }}
+                        error={
+                            descripcionErrores || errors.descripcion
                         }
-                        error={errors.descripcion}
-                        placeholder='Descripción de la caegoria'
                         rows={4}
+                        maxLength={255}
                     />
                     <FormCheckbox
                         id="estado"

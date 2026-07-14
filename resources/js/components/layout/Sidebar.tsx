@@ -26,7 +26,7 @@ export default function Sidebar({
         },
         {
             icon:<Package size={20}/>,
-            text: "Productoa",
+            text: "Productos",
         },
         {
             icon: <ShoppingCart size={20}/>,
