@@ -2,33 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEmpleadoRequest;
+use App\Htpp\Requests\UpdateEmpleadoRequest;
 use App\Models\Empleado;
-use Illuminate\Http\Request;
+use  Illuminate\Http\RedirectResponse;
+use Inertia\Inertia; 
+use Inertia\Response;
 
 class EmpleadoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() :Response
     {
-        //
+        $empleados = Empleados::orderBy('nombre')->get();
+
+        return Inertia::render('Empleados/Index',[
+            'empleados' => $empleados,
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create() :Response
     {
-        //
+        return Inertia::render('Empleados/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreEmpleadoRequest $request): RedirectResponse
     {
-        //
+        Empleado::create ($request->validated());
+
+        return redirect()
+            ->route('empleados.index')
+            ->white('success', 'Empleados registrada correctamente. ');
     }
 
     /**
@@ -42,24 +54,33 @@ class EmpleadoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Empleado $empleado)
+    public function edit(Empleado $empleado): Response
     {
-        //
+        return Inertia::render('Empleados/Edit',[
+            'empleado' => $empleado
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Empleado $empleado)
+    public function update(UpdateEmpleadosRequest $request, Empleado $empleado): RedirectResponse
     {
-        //
+        $empleado -> update($request -> validated());
+        return redirect()
+            ->route('empleados.index')
+            ->white('success', 'Empleado actualizado correctamente. ');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Empleado $empleado)
+    public function destroy(Empleado $empleado): RedirectResponse
     {
-        //
+        $empleado->delete();
+
+        return redirect()
+            ->route('empleados.index')
+            ->with('success', 'Empledo eliminado corrcetamentre')
     }
 }
