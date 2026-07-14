@@ -1,20 +1,18 @@
 import { FormEvent } from 'react';
 import { router, useForm } from '@inertiajs/react';
-import { ArrowLeft, Save, Target } from 'lucide-react';
+import { ArrowLeft, Save} from 'lucide-react';
 
 import MainLayout from '@/components/layout/MainLayout';
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import FormInput from '@/components/Inputs/FormInput';
 import FormTextarea from '@/components/Inputs/FormTextarea';
 import FormCheckbox from '@/components/Inputs/FormCheckbox';
-import { Description } from '@radix-ui/react-dialog';
-import { Value } from '@radix-ui/react-select';
 
 interface Categoria {
     id_categoria: number;
     nombre: string; 
     descripcion: string | null; 
-    estado:Categoria;
+    estado: boolean;
 }
 
 interface EditProps {
@@ -31,7 +29,7 @@ export default function Edit({ categoria}: EditProps){
     function submit(e:FormEvent) {
         e.preventDefault();
 
-        put(`/categoria/${categoria.id_categoria}`);
+        put(`/categorias/${categoria.id_categoria}`);
     }
     return(
         <MainLayout>
@@ -71,7 +69,7 @@ export default function Edit({ categoria}: EditProps){
                         type="text"
                         value={data.nombre}
                         onChange={(e)=>
-                            setData('nombre', e.target,Value)
+                            setData('nombre', e.target.value)
                         }
                         error={errors.nombre}
                     />
@@ -79,7 +77,7 @@ export default function Edit({ categoria}: EditProps){
                         label="Descripcion"
                         value={data.descripcion}
                         onChange={(e)=>
-                            setData('descripcion', e.target,Value)
+                            setData('descripcion', e.target.value)
                         }
                         error={errors.descripcion}
                         rows={4}
@@ -89,9 +87,22 @@ export default function Edit({ categoria}: EditProps){
                         label="Categoria activa"
                         checked={data.estado}
                         onChange={(e)=>
-                            setData('estado', e.target.value)
+                            setData('estado', e.target.checked)
                         }
                     />
+                    <div className='flex justify-end'>
+                        <PrimaryButton
+                            type="submit"
+                            disabled={processing}
+                        >
+                            <span className='flex items-center gap-2'>
+                                <Save size={18}/> 
+                                {processing
+                                    ? 'Actualizando...'
+                                    : 'Actualizar categoría'}   
+                            </span>    
+                        </PrimaryButton>    
+                    </div>
                 </form>
             </div>
         </MainLayout>

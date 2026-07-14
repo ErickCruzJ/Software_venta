@@ -14,9 +14,9 @@ export default function Header({
                 <div className="flex items-center gap-4">
                     <button 
                         onClick={() => setSidebarOpen(!sidebarOpen)}
-                        className="rounded-lg p-2 transition hover:bg-gray-100"
+                        className="rounded-lg p-2 text-gray-700 transition hover:bg-gray-100 hover:text-gray-900"
                     >
-                        <Menu size={20}/>
+                        <Menu size={24}/>
                     </button>
                     <div>
                         <h1 className="text-xl font-bold text-gray-800">

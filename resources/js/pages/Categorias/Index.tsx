@@ -46,21 +46,37 @@ export default function Index({ categorias }: IndexProps) {
     }, [categorias, search]);
 
     function editarCategoria (id: number) {
-        router.visit(`/categoria/${id}/edit`);
+        router.visit(`/categorias/${id}/edit`);
     }
 
     function eliminarCategoria(categoria: Categoria) {
-        const confirmar = window.confirm(
-            `¿Deseas eliminar la categoria "${categoria.nombre}"?`
-        );
+       console.log('CLICK ELIMINAR', categoria);
 
-        if (!confirmar) {
-            return;
+    const confirmar = window.confirm(
+        `¿Deseas eliminar la categoría "${categoria.nombre}"?`
+    );
+
+    console.log('CONFIRMAR:', confirmar);
+
+    if (!confirmar) {
+        return;
+    }
+
+    console.log(
+        'URL DELETE:',
+        `/categorias/${categoria.id_categoria}`
+    );
+
+    router.delete(
+        `/categorias/${categoria.id_categoria}`,
+        {
+            onStart: () => console.log('DELETE INICIADO'),
+            onSuccess: () => console.log('DELETE EXITOSO'),
+            onError: (errors) =>
+                console.log('ERROR DELETE:', errors),
+            onFinish: () => console.log('DELETE FINALIZADO'),
         }
-
-        router.delete(
-            `/categorias/${categoria.id_categoria}`
-        );
+    );
     }
 
     const columns = [

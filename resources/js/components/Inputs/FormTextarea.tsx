@@ -21,7 +21,10 @@ export default function FormTextarea({
             <textarea 
                 {...props}
                 className={`
-                    w-full resize-none rounded-lg border px-4 py-2
+                    w-full resize-none rounded-lg border 
+                    bg-white px-4 py-2
+                    text-gray-900
+                    placeholder: text-gray-400
                     outline-none transition focus:ring-2
                     ${
                         error 

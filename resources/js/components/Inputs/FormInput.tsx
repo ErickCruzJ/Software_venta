@@ -21,8 +21,11 @@ interface FormInputProps
                 <input 
                     {...props}
                     className={`
-                        w-full rounded-lg border px-4 py-2
-                        outline-one transition
+                        w-full rounded-lg border 
+                        bg-white px-4 py-2
+                        text-gray-900
+                        placeholder: text-gray-200
+                        outline-none transition
                         focus:ring-2
                         ${
                             error
