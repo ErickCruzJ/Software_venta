@@ -17,11 +17,6 @@ export default function Create() {
         estado: true,
     });
 
-    function submit(e: FormEvent) {
-        e.preventDefault();
-
-        post('/categorias');
-    }
 
     function validarNombre(nombre: string): boolean{
         const regex = /^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ0-9\s]+$/u;
@@ -57,7 +52,7 @@ export default function Create() {
         return true;
     }
 
-    function submite (e:FormEvent) {
+    function submit(e:FormEvent) {
         e.preventDefault();
 
         const nombreValido = validarNombre(data.nombre);
