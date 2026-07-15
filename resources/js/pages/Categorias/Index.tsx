@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { router } from '@inertiajs/react';
 import { Plus} from 'lucide-react';
 
-import MainLayout from '@/components/layout/MainLayout';
+
 import Toolbar from '@/components/Toolbar/Toolbar';
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import SearchInput from  '@/components/Inputs/SearchInput';
@@ -111,7 +111,7 @@ export default function Index({ categorias }: IndexProps) {
     ];
 
     return (
-        <MainLayout>
+        <>
             <div className="space-y-6">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">
@@ -152,6 +152,6 @@ export default function Index({ categorias }: IndexProps) {
                     }
                 />
             </div>
-        </MainLayout>
+        </>
     );
 }

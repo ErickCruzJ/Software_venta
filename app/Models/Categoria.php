@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Observers\CategoriaObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy([CategoriaObserver::class])]
 class Categoria extends Model
 {
 

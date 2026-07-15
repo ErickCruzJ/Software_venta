@@ -1,8 +1,8 @@
 import { FormEvent, useState } from 'react';
 import { router, useForm } from '@inertiajs/react';
 import { ArrowLeft, Save } from 'lucide-react';
+import {verificarConexion} from '@/utils/connection';
 
-import MainLayout from '@/components/layout/MainLayout';
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import FormInput from '@/components/Inputs/FormInput';
 import FormTextarea from '@/components/Inputs/FormTextarea';
@@ -63,11 +63,14 @@ export default function Create() {
             return;
         }
 
+        if(!verificarConexion()){
+            return
+        }
         post('/categorias');
     }
 
     return (
-        <MainLayout>
+        <>
             <div className='mx-auto max-w-3xl space-y-6'>
                 <div>
                     <button
@@ -149,6 +152,6 @@ export default function Create() {
                     </div>
                 </form>
             </div>
-        </MainLayout>
+        </>
     );
 }

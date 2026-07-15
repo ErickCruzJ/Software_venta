@@ -1,36 +1,67 @@
 import { Head } from '@inertiajs/react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import { dashboard } from '@/routes';
 
-export default function Dashboard() {
-    return (
+
+export default function Dashbord() {
+    return(
         <>
-            <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+            <Head title='Panel principal' />
+            <div className='space-y-6'>
+                <div>
+                    <h1 className='text-2xl font-bold text-gray-900'>
+                        Panel pricipal
+                    </h1>
+                    <p className='grid gap-6 md:grid-cols-2 lg:grid-col-3'>
+                        Bienvenido al sistema de ventas e inventario
+                    </p>
+                </div>
+                <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+                    <div className='
+                        rounded-xl
+                        border border-gray-200 
+                        bg-white
+                        p-6
+                        shadow-sm
+                    '>
+                        <p className='text-sm text-gray-500'>
+                            Categorías
+                        </p>
+                        <p className='mt-2 text-3xl font-bold text-gray-900'>
+                            0
+                        </p>
                     </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                    <div className='
+                        rounded-xl
+                        border border-gray-200
+                        bg-white
+                        p-6 
+                        shadow-sm 
+                    '>
+                        <p className=' text-sm text-gray-500'>
+                            stock bajo
+                        </p>
+                        <p className='mt-2 text-3xl font-bold text-gray-900'>
+                            0
+                        </p>
                     </div>
                 </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                <div className='
+                    min-h-96
+                    rounded-xl
+                    border border-gray-200
+                    bg-white
+                    p-6
+                    shadow-sm
+                '>
+                    <h2 className='text-lg font-semibold text-gray-900'>
+                        Resumen del sistema
+                    </h2>
+
+                    <p className='mt-2 text-sm text-gray-500 '>
+                        Aqui mostraremos estadisticas de ventas e inventario
+                    </p>
                 </div>
             </div>
-        </>
-    );
-}
 
-Dashboard.layout = {
-    breadcrumbs: [
-        {
-            title: 'Dashboard',
-            href: dashboard(),
-        },
-    ],
-};
+        </>
+    )
+}

@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,7 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
+        $middleware->encryptCookies(
+            except: ['appearance', 'sidebar_state']
+        );
 
         $middleware->web(append: [
             HandleAppearance::class,
@@ -25,6 +28,26 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
+            fn (Request $request) =>
+                $request->is('api/*') ||
+                $request->expectsJson(),
         );
-    })->create();
+
+        $exceptions->render(
+            function (
+                QueryException $exception,
+                Request $request
+            ) {
+                $sqlState = $exception->errorInfo[0] ?? null;
+
+                if ($sqlState !==null && str_starts_with($sqlState, '08')) {
+                    return response()->view(
+                        'errors.database',
+                        [],
+                        503
+                    );
+                }
+            }
+        );
+    })
+    ->create();

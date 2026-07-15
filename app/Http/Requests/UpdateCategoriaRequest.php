@@ -35,7 +35,7 @@ class UpdateCategoriaRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:255',
-                'regex:/^[A-Za.zÁÉÍÓÚáéíóúÜüÑñ0-9\s.,()-]*$/u',
+                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ0-9\s.,()-]*$/u',
             ],
             'estado' => [
                 'required',
