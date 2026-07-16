@@ -12,7 +12,7 @@ class UpdateEmpleadoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,12 @@ class UpdateEmpleadoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nombre' => [
+                'required',
+                'string',
+                'max:100',
+                'regex: /^[\pL\s]+$/u'
+            ]
         ];
     }
 }

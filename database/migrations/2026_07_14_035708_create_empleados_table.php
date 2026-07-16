@@ -32,7 +32,14 @@ return new class extends Migration
 
             $table->string('foto',255)->nullable();
 
-            $table->boolean('estado')->default(true);
+            $table->enum('estado', [
+                'Activo',
+                'Suspendido',
+                'Vacaciones',
+                'Baja temporal',
+                'Baja',
+
+            ])->default(Acticvio);
 
 
             $table->timestamps();

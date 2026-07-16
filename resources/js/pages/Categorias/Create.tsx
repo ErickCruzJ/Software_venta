@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react';
 import { router, useForm } from '@inertiajs/react';
 import { ArrowLeft, Save } from 'lucide-react';
 import {verificarConexion} from '@/utils/connection';
+import { validarNombreGeneral, validarDescripcion } from '@/validators';
 
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import FormInput from '@/components/Inputs/FormInput';
@@ -10,7 +11,7 @@ import FormCheckbox from '@/components/Inputs/FormCheckbox';
 
 export default function Create() {
     const [nombreError, setNombreError] = useState('');
-    const [descripcionErrores, setDescripcionErrores] = useState('');
+    const [descripcionError, setDescripcionError] = useState('');
     const { data, setData, post, processing, errors } = useForm({
         nombre: '',
         descripcion: '',
@@ -18,46 +19,24 @@ export default function Create() {
     });
 
 
-    function validarNombre(nombre: string): boolean{
-        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ0-9\s]+$/u;
-
-        if (!nombre.trim()){
-            setNombreError(
-                'El nombre de la categoria es obligatorio.'
-            );
-            return false;
-        }
-
-        if (!regex.test(nombre)){
-            setNombreError(
-                'El nombre contiene carateres no permitidos. Solo se aceptan letras, numeros y espacios'
-            );
-            return false;
-        }
-        setNombreError('');
-        return true;
+    function validarNombreCampo(nombre: string): boolean{
+        const resultado = validarNombreGeneral(nombre);
+        setNombreError(resultado.message);
+        return resultado.valid;
     }
     
-    function validarDescripcion(descripcion: string): boolean{
-        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ0-9\s.,()-]*$/u;
-
-        if (!regex.test(descripcion)) {
-            setDescripcionErrores(
-                'La descripción contiene caracteres no permitidos. '
-            );
-            return false;
-        }
-
-        setDescripcionErrores('');
-        return true;
+    function validarDescripcionCampo(descripcion: string): boolean{
+       const resultado = validarDescripcion(descripcion);
+       setDescripcionError(resultado.message);
+       return resultado.valid;
     }
 
     function submit(e:FormEvent) {
         e.preventDefault();
 
-        const nombreValido = validarNombre(data.nombre);
+        const nombreValido = validarNombreCampo(data.nombre);
 
-        const descripcionValida = validarDescripcion(data.descripcion);
+        const descripcionValida = validarDescripcionCampo(data.descripcion);
 
         if (!nombreValido || !descripcionValida){
             return;
@@ -76,17 +55,17 @@ export default function Create() {
                     <button
                         type="button"
                         onClick={() => router.visit('/categorias')}
-                        className="mb-4 flex item-center gap-2 text-sm text.gary-500 hover:text-gray-900"
+                        className="mb-4 flex items-center gap-2 text-sm text-gary-500 hover:text-gray-900"
                     >
                         <ArrowLeft size={18} />
-                        Regreasar
+                        Regresar
                     </button>
 
                     <h1 className="text-2xl font-bold text-gray-900">
                         Nueva categoría
                     </h1>
 
-                    <p className="mt-1 text-sm text-gary-500">
+                    <p className="mt-1 text-sm text-gray-500">
                         Registrar una nueva categoria de producto
                     </p>
                 </div>
@@ -103,7 +82,7 @@ export default function Create() {
                             const valor = e.target.value;
 
                             setData('nombre', valor);
-                            validarNombre(valor);
+                            validarNombreCampo(valor);
                         }}
                         error={
                             nombreError || errors.nombre
@@ -117,10 +96,10 @@ export default function Create() {
                             const valor = e.target.value;
 
                             setData('descripcion', valor);
-                            validarDescripcion(valor);
+                            validarDescripcionCampo(valor);
                         }}
                         error={
-                            descripcionErrores || errors.descripcion
+                            descripcionError || errors.descripcion
                         }
                         rows={4}
                         maxLength={255}
@@ -141,7 +120,7 @@ export default function Create() {
                             type="submit"
                             disabled={processing}
                         >
-                            <span className='flex item-center gap-2'>
+                            <span className='flex items-center gap-2'>
                                 <Save size={18} />
                                     {processing
                                         ? 'Guardando...'

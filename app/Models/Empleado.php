@@ -27,7 +27,6 @@ class Empleado extends Model
     {
         return[
             'fecha_contratacion' => 'date',
-            'estado'=>'boolean',
         ];
     }
 }

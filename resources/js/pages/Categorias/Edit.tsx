@@ -6,6 +6,7 @@ import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import FormInput from '@/components/Inputs/FormInput';
 import FormTextarea from '@/components/Inputs/FormTextarea';
 import FormCheckbox from '@/components/Inputs/FormCheckbox';
+import { validarNombreGeneral, validarDescripcion as validarDescripcionTexto, } from '@/validators';
 
 interface Categoria {
     id_categoria: number;
@@ -28,37 +29,16 @@ export default function Edit({ categoria}: EditProps){
     });
 
 
-    function validarNombre(nombre: string): boolean{
-        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ0-9\s]+$/u;
-
-        if (!nombre.trim()){
-            setNombreError(
-                'El nombre de la categoria es obligatorio'
-            );
-            return false
-        }
-
-        if (!regex.test(nombre)){
-            setNombreError(
-                'El nombre contiene caracteres no permitidos. Solo se aceptan letras, numeros y espacios'
-            );
-            return false;
-        }
-        setNombreError('');
-        return true;
+    function validarNombre(valor: string){
+        const resultado = validarNombreGeneral(valor);
+        setNombreError(resultado.message);
+        return resultado.valid;
     }
 
-    function validarDescripcion(descripcion: string): boolean{
-        const regex = /^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ0-9\s.,/()-]*$/u;
-
-        if (!regex.test(descripcion)){
-            setDescripcionError(
-                'La descripción contiene caracteres no permitidos'
-            );
-            return false;
-        }
-        setDescripcionError('');
-        return true;
+    function validarDescripcion(valor: string){
+        const resultado = validarDescripcionTexto(valor );
+        setDescripcionError(resultado.message);
+        return resultado.valid;
     }
 
     function submit(e: FormEvent){

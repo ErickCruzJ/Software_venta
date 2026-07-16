@@ -28,7 +28,7 @@ class StoreCategoriaRequest extends FormRequest
                 'string',
                 'max:100',
                 'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+/u',
-                'unique:categorias,nombre',
+                Rule::unique('categorias,nombre'),
             ],
             'descripcion' => [
                 'nullable',
