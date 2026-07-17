@@ -13,7 +13,7 @@ class Empleado extends Model
         'apellido_materno',
         'calle',
         'numero',
-        'CP',
+        'codigo_postal',
         'colonia',
         'alcaldia',
         'ciudad',
@@ -28,5 +28,9 @@ class Empleado extends Model
         return[
             'fecha_contratacion' => 'date',
         ];
+    }
+    public function usuario()
+    {
+        return $this->hasOne(Usuario::class, 'id_usuario');
     }
 }

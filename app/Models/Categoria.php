@@ -24,4 +24,9 @@ class Categoria extends Model
         ];
     }
 
+    public function producto()
+    {
+        return $thsis->hasMany(Productos::class, 'id_producto');
+    }
+
 }
