@@ -20,7 +20,7 @@ return new class extends Migration
             
             $table->string('calle',100);
             $table->string('numero',10);
-            $table->string('CP', 5);
+            $table->string('codigo_postal', 5);
             $table->string('colonia', 100);
             $table->string('alcaldia', 100);
             $table->string('ciudad', 100);
@@ -39,7 +39,9 @@ return new class extends Migration
                 'Baja temporal',
                 'Baja',
 
-            ])->default(Acticvio);
+            ])->default('Activo');
+
+            $table->date('fecha_baja')->nullable();
 
 
             $table->timestamps();
