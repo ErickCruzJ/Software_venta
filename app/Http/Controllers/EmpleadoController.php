@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEmpleadoRequest;
-use App\Htpp\Requests\UpdateEmpleadoRequest;
+use App\Http\Requests\UpdateEmpleadoRequest;
 use App\Models\Empleado;
-use  Illuminate\Http\RedirectResponse;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia; 
 use Inertia\Response;
 
@@ -16,7 +16,7 @@ class EmpleadoController extends Controller
      */
     public function index() :Response
     {
-        $empleados = Empleados::orderBy('nombre')->get();
+        $empleados = Empleado::orderBy('nombre')->get();
 
         return Inertia::render('Empleados/Index',[
             'empleados' => $empleados,
@@ -40,7 +40,7 @@ class EmpleadoController extends Controller
 
         return redirect()
             ->route('empleados.index')
-            ->white('success', 'Empleados registrada correctamente. ');
+            ->with('success', 'Empleados registrada correctamente. ');
     }
 
     /**
@@ -64,12 +64,12 @@ class EmpleadoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEmpleadosRequest $request, Empleado $empleado): RedirectResponse
+    public function update(UpdateEmpleadoRequest $request, Empleado $empleado): RedirectResponse
     {
         $empleado -> update($request -> validated());
         return redirect()
             ->route('empleados.index')
-            ->white('success', 'Empleado actualizado correctamente. ');
+            ->with('success', 'Empleado actualizado correctamente. ');
     }
 
     /**
@@ -81,6 +81,6 @@ class EmpleadoController extends Controller
 
         return redirect()
             ->route('empleados.index')
-            ->with('success', 'Empledo eliminado corrcetamentre')
+            ->with('success', 'Empledo eliminado corrcetamentre');
     }
 }
