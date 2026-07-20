@@ -23,7 +23,7 @@ return new class extends Migration
                 ->restrictOnDelete();
             $table->string('nombre_usuario',50);
             $table->string('password');
-            $table->timestamp('ultma_conexion')->nullable();
+            $table->timestamp('ultima_conexion')->nullable();
             $table->enum('estado',[
                 'Conectado',
                 'Desconectado',

@@ -27,10 +27,14 @@ class usuario extends Model
 
     public function rol()
     {
-        return $this->belomgsTo(Rol::class,'id_rol');
+        return $this->belongsTo(Rol::class,'id_rol');
     }
     public function empleado()
     {
-        return $this->belomgTo(Empleado::class,'id_empleado')
+        return $this->belongTo(Empleado::class,'id_empleado');
+    }
+    public function inventario()
+    {
+        return $this->belongsRTo(Inventario::class,'id_inventario')
     }
 }

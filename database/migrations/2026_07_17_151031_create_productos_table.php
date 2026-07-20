@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('nombre',100);
             $table->string('descripcion',255)->nullable();
             $table->decimal('contenido',8,2);
-            $table->enum('unida_medida', [
+            $table->enum('unidad_medida', [
                 'pz',
                 'L',
                 'ml',
@@ -37,7 +37,7 @@ return new class extends Migration
             $table->enum('estado',[
                 'Disponible',
                 'Agotado',
-            ]);
+            ])->default('Disponible');
             $table->timestamps();
         });
     }

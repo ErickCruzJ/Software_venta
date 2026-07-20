@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('cantidad_lote_inicial', 8, 2);
             $table->decimal('cantidad_lote_final', 8, 2);
             $table->date('fecha_caducidad');
-            $table->string('descripcion', 255);
+            $table->string('descripcion', 255)->nullable();
             $table->enum('estado',[
                 'Disponible',
                 'Vencido',
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('caducidads');
+        Schema::dropIfExists('caducidades');
     }
 };
