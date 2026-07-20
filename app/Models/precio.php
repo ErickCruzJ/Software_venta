@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Precio extends Model
 {
@@ -13,9 +14,9 @@ class Precio extends Model
         'precio_venta',
         'fecha',
         'estado',
-    ]
+    ];
     
-    publuc function casts():array
+    public function casts():array
     {
         return[
             'fecha' => 'date',
@@ -23,8 +24,8 @@ class Precio extends Model
         ];
     }
 
-    public function producto
+    public function producto(): BelongsTo
     {
-        return $this->belonTo(Producto::Class, 'id_producto');
+        return $this->belonsTo(Producto::Class, 'id_producto');
     }
 }

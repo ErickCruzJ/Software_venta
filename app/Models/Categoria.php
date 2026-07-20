@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Observers\CategoriaObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy([CategoriaObserver::class])]
 class Categoria extends Model
@@ -24,9 +25,9 @@ class Categoria extends Model
         ];
     }
 
-    public function producto()
+    public function productos(): HasMany
     {
-        return $thsis->hasMany(Productos::class, 'id_producto');
+        return $this->hasMany(Producto::class, 'id_categoria');
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illiminate\Database\Eloquent\Relations\HasMany;
 
 class Cat_marca extends Model
 {
@@ -20,8 +21,8 @@ class Cat_marca extends Model
             'estado' => 'boolean',
         ];
     }
-    public function producto()
+    public function producto():HasMany
     {
-        return $this->hasMany(Producto::class, 'id_producto');
+        return $this->hasMany(Producto::class, 'id_cat_marca');
     }
 }

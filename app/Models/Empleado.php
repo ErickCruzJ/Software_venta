@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illumiante\Database\Eloquent\Relations\HasOne;
 
 class Empleado extends Model
 {
@@ -29,8 +30,8 @@ class Empleado extends Model
             'fecha_contratacion' => 'date',
         ];
     }
-    public function usuario()
+    public function usuario(): HasOne
     {
-        return $this->hasOne(Usuario::class, 'id_usuario');
+        return $this->hasOne(Usuario::class, 'id_empleado');
     }
 }

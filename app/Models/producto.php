@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Producto extends Model
 {
@@ -20,23 +22,23 @@ class Producto extends Model
         'estado',
     ];
     
-    public function cat_categoria
+    public function marca(): BelongsTo
     {
         return $this->belongsTo(Cat_marca::Class, 'id_cat_marca'); 
     }
 
-    public function categoria
+    public function categoria():BelongsTo
     {
         return $this->belongsTo(Categoria::Class, 'id_categoria');
     }
 
-    public function precio
+    public function precio():HasOne
     {
-        return $this->hasOne(Precio::class, 'id_precio');
+        return $this->hasOne(Precio::class, 'id_producto');
     }
 
-    public function inventario
+    public function inventario(): HasOne
     {
-        return $this->hasOne(Inventario::Class, 'id_inventario');
+        return $this->hasOne(Inventario::Class, 'id_producto');
     }
 }
