@@ -3,38 +3,40 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class usuario extends Model
+class Usuario extends Model
 {
     protected $primaryKey = 'id_usuario';
 
-    protected $fillabel =[
+    protected $fillable =[
         'id_empleado',
         'id_rol',
         'nombre_usuario',
         'password',
-        'ultma_conexion',
+        'ultima_conexion',
         'estado',
     ];
 
-    protected function casts(): aray
+    protected function casts(): array
     {
         return[
             'password' => 'hashed',
-            'ultima_conexion' => 'date',
+            'ultima_conexion' => 'datetime',
         ];
     }
 
-    public function rol()
+    public function rol(): BelongsTo
     {
         return $this->belongsTo(Rol::class,'id_rol');
     }
-    public function empleado()
+    public function empleado():BelongsTo
     {
-        return $this->belongTo(Empleado::class,'id_empleado');
+        return $this->belomgsTo(Empleado::class,'id_empleado');
     }
-    public function inventario()
+    public function inventarios(): HasMany
     {
-        return $this->belongsRTo(Inventario::class,'id_inventario')
+        return $this->hasMany(Inventario::class, 'id_usuario');
     }
 }

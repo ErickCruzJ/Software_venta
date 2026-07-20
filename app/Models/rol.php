@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany
 
-class rol extends Model
+class Rol extends Model
 {
     protected $primaryKey = 'id_rol';
 
@@ -19,7 +20,7 @@ class rol extends Model
             'estado' => 'boolean',
         ];
     }
-    public function productos()
+    public function usuarios(): HasMany
     {
         return $this->hasMany(Usuario::class, 'id_rol');
     }
