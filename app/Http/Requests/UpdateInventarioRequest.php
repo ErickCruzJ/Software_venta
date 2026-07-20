@@ -57,9 +57,6 @@ class UpdateInventarioRequest extends FormRequest
 
             'fecha_hora.required' => 'Debe indicar la fecha y hora.',
             'fecha_hora.date' => 'La fecha y hora no son válidas.',
-
-            'estado.required' => 'Debe seleccionar un estado.',
-            'estado.in' => 'El estado seleccionado no es válido.',
         ];
     }
 }
