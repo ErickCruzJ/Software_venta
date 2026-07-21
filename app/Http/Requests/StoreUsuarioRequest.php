@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreUsuarioRequest extends FormRequest
 {
@@ -36,7 +37,7 @@ class StoreUsuarioRequest extends FormRequest
                 'string',
                 'min: 4',
                 'max: 50',
-                'unique: usuarios,nombre_usuario',
+                Rule::unique('usuarios','nombre_usuario'),
             ],
             'password' => [
                 'required',
@@ -48,8 +49,13 @@ class StoreUsuarioRequest extends FormRequest
             ],
             'estado' =>[
                 'required',
-                'in:Conecatado, Desconecatdo, Bloqueado, Suspendido',
-            ].
+                Rule::in([
+                    'Conecatado',
+                    'Desconecatdo', 
+                    'Bloqueado', 
+                    'Suspendido',
+                ]),
+            ],
         ];
     }
     public function messages():array

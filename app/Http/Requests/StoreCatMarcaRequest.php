@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreCatMarcaRequest extends FormRequest
 {
@@ -27,12 +28,14 @@ class StoreCatMarcaRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'unique:cat_marcas,nombre',
+                'regex:/^[\pL0-9\s-]+$/u'
+                Rule::unique('cat_marcas','nombre'),
             ],
             'descripcion' => [
                 'nullable',
                 'string',
                 'max: 255',
+                'regex:/^[\pL0-9\s.,()#%&+\-]*$/u',
             ],
             'estado'=>[
                 'required',
@@ -47,9 +50,11 @@ class StoreCatMarcaRequest extends FormRequest
             'nombre.string' => 'El nombre de la marca debe ser texto.',
             'nombre.max' => 'El nombre no puede exceder los 100 caracteres. ',
             'nombre.unique' => 'Ya existe una marca con ese nombre.',
+            'nombre.regex' => 'Contien caracteres inválidos, solo permite letras, números, espacios y guiones. ',
 
             'descripcion.string' => 'La descripción debe ser texto.' ,
             'descripcion.,max' => 'La descripcion no puede exceder los 255 caracteres.',
+            'descripcion.regex' => 'Contiene caracteres invalidos, solo permite letras, números, espacios,puntos, comas, (, ), #, %, &, + y - ',
 
             'estado.required' => 'Debe indicar el estado.',
             'estado.boolean' => 'El estado es invalido. ', 

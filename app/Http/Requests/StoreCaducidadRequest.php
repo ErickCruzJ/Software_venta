@@ -47,10 +47,15 @@ class StoreCaducidadRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:255',
+                'regex:/>^[\pL0-9\s,.()#%&+\-]*$/u',
             ],
             'estado' => [
                 'required',
-                'in:Disponible, Vencido, Vendido',
+                Rule::in([
+                    'Disponible', 
+                    'Vencido', 
+                    'Vendido',
+                ]),
             ],
         ];
     }
@@ -75,6 +80,7 @@ class StoreCaducidadRequest extends FormRequest
 
             'descripcion.string' => 'La descripción debe ser texto.',
             'descripcion.max' => 'La descripción no puede exceder los 255 caracteres.',
+            'descripcion.regex' => 'Contiene caracteres invalidos, solo permite letras, números, espacios,puntos, comas, (, ), #, %, &, + y - ',
 
             'estado.required' => 'Debe seleccionar el estado.',
             'estado.in' => 'El estado seleccionado no es válido.',

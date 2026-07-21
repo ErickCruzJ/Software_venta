@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreCategoriaRequest extends FormRequest
 {
@@ -27,14 +28,14 @@ class StoreCategoriaRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+/u',
-                Rule::unique('categorias,nombre'),
+                'regex:/^[\pL0-9\s-]+$/u',
+                Rule::unique('categorias','nombre'),
             ],
             'descripcion' => [
                 'nullable',
                 'string',
                 'max:255',
-                'regex: /^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ0-9\s.,()-]*$/u'
+                'regex:/^[\pL0-9\s.,()#%&+\-]*$/u',
             ],
             'estado' => [
                 'required',
@@ -47,10 +48,10 @@ class StoreCategoriaRequest extends FormRequest
         return[
             'nombre.required' => 'El nombre de la categoria es obligatorio.',
             'nombre.max' => 'El nombre no puede superar los 100 caracteres.',
-            'nombre.regex' => 'El nombre contiene carateres no permitidos. Solo se aceptan letras, números y espacios. ',
+            'nombre.regex' => 'Contien caracteres inválidos, solo permite letras, números, espacios y guiones. ',
             'nombre.unique' =>  'Ya existe una categoria con este nombre. ',
             'descripcion.max' => 'La descripcion no puede superar los 255 carateres.',
-            'descripcion.regex' => 'La descripción contiene caracteres no permitidos',
+            'descripcion.regex' => 'Contiene caracteres invalidos, solo permite letras, números, espacios,puntos, comas, (, ), #, %, &, + y - ',
             'estado.required' => 'El estado es obligatorio. ',
             'estado.boolean' => 'El estado seleccionado no es válido. ',
         ];

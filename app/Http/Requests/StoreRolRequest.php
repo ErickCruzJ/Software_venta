@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-
+uss Illuminate\Validation\Rule;
 class StoreRolRequest extends FormRequest
 {
     /**
@@ -27,12 +27,13 @@ class StoreRolRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'unique:roles, nombre',
+                Rule::unique('roles', 'nombre'),
             ],
             'descripcion' => [
                 'required',
                 'string',
                 'max:255',
+                'regex: /^[\pL0-9\s.,()#%&+\-]+$/u',
             ],
             'estado' => [
                 'required',
@@ -49,6 +50,7 @@ class StoreRolRequest extends FormRequest
 
             'descripcion.required' => 'La descripción es obligatoria.',
             'descripcion.max' => 'La descripción no puede superar los 255 caracteres.',
+            'descripcion.regex' => 'Contiene caracteres invalidos, solo permite letras, números, espacios,puntos, comas, (, ), #, %, &, + y - ',
 
             'estado.required' => 'Debe indicar el estado.',
             'estado.boolean' => 'El estado no es válido.',
