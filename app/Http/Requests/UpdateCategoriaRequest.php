@@ -28,14 +28,14 @@ class UpdateCategoriaRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+$/u',
+                'regex:/^[\pL0-9\s-]+$/u',
                 Rule::unique('categorias','nombre')->ignore($this->categoria, 'id_categoria'),
             ],
             'descripcion' => [
                 'nullable',
                 'string',
                 'max:255',
-                'regex:/^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ0-9\s.,()-]*$/u',
+                'regex:/^[\pL0-9\s.,()#%&+\-]*$/u',
             ],
             'estado' => [
                 'required',
@@ -44,15 +44,6 @@ class UpdateCategoriaRequest extends FormRequest
         ];
     }
     public function messages(): array{
-        return[
-            'nombre.required' => 'El nombre de la categoria es obligatorio. ',
-            'nombre.max' => 'El nombre no puede super los 100 caracteres',
-            'nombre.regex' => 'El nombre contiene caracteres no permitidos. Solo se aceptan letras, números y espacios. ',
-            'nombre.unique' => 'Ya existe una categoria con este nombre. ',
-            'descripcion.max' => 'La descripcion no puede superar los 255 caracteres.', 
-            'descripcion.regex' => 'La descripcion contiene caracteres no permitidos. ',
-            'esatdo.required' => 'El estado de obligatoio ',
-            'estado.boolean' => 'El estado seleccionado no es válido',
-        ];
+        return(new StoreCategoriaRequest())->messages();
     }
 }

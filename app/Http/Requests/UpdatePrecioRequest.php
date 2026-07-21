@@ -44,19 +44,6 @@ class UpdatePrecioRequest extends FormRequest
     }
     public function messages():array
     {
-        return[
-            'id_producto.required' => 'Debe seleccionar un producto.',
-            'id_producto.exists' => 'El producto seleccionado no existe.',
-
-            'precio_venta.required' => 'El precio de venta es obligatorio.',
-            'precio_venta.numeric' => 'El precio debe ser un valor numérico.',
-            'precio_venta.min' => 'El precio debe ser mayor que cero.',
-
-            'fecha.required' => 'La fecha es obligatoria.',
-            'fecha.date' => 'La fecha no es válida.',
-
-            'estado.required' => 'Debe indicar el estado.',
-            'estado.boolean' => 'El estado es inválido.',
-        ];
+        return(new StorePrecioRequest())->messages();
     }
 }

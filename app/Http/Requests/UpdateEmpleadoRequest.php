@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+usE Illuminate\Validation\Rule;
 
 class UpdateEmpleadoRequest extends FormRequest
 {
@@ -55,7 +56,7 @@ class UpdateEmpleadoRequest extends FormRequest
             ],
             'codigo_postal' => [
                 'required',
-                'digits: 5',
+                'regex: /^[0-9]{5}',
             ],
             'colonia' => [
                 'required',
@@ -77,7 +78,7 @@ class UpdateEmpleadoRequest extends FormRequest
             ],
             'telefono' =>[
                 'required',
-                'digist:10',
+                'regex:/^[0-9]{10}$/u',
             ],
             'correo' => [
                 'required',
@@ -94,7 +95,7 @@ class UpdateEmpleadoRequest extends FormRequest
             ],
             'foto' =>[
                 'nullable',
-                'imagen',
+                'image',
                 'mimes: jps,jpeg,png,webp', 
                 'max:2048',
             ],

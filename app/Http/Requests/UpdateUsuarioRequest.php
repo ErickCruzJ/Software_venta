@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateUsuarioRequest extends FormRequest
 {
@@ -36,6 +37,7 @@ class UpdateUsuarioRequest extends FormRequest
                 'string',
                 'min: 4',
                 'max: 50', 
+                'regex:/^[\pL0-9#%&\-]+$/u',
                 Rule::unique('unique', 'nombre_usuario')
                     ->ignore($this->route('usuario')->id_usuario, 'id_usuario'),
             ],
@@ -49,28 +51,17 @@ class UpdateUsuarioRequest extends FormRequest
             ],
             'estado' => [
                 'required',
-                'in: Conectado, Desconectado, Bloqueado, Suspendido',
+                Rule::in([
+                    'Conectado', 
+                    'Desconectado', 
+                    'Bloqueado', 
+                    'Suspendido',
+                ]),
             ],
         ];
     }
     public function messages():array
     {
-        return[
-            'id_empleado.required' => 'Debe seleccionar un empleado.',
-            'id_empleado.exists' => 'El empleado seleccionado no existe.',
-
-            'id_rol.required' => 'Debe seleccionar un rol.',
-            'id_rol.exists' => 'El rol seleccionado no existe.',
-
-            'nombre_usuario.required' => 'El nombre de usuario es obligatorio.',
-            'nombre_usuario.unique' => 'Ese nombre de usuario ya está registrado.',
-            'nombre_usuario.min' => 'Debe contener al menos 4 caracteres.',
-            'nombre_usuario.max' => 'No puede superar los 50 caracteres.',
-
-            'password.confirmed' => 'Las contraseñas no coinciden.',
-
-            'estado.required' => 'Debe seleccionar un estado.',
-            'estado.in' => 'El estado seleccionado no es válido.',
-        ];
+        return(new StoreUsuarioReques())->messages();
     }
 }

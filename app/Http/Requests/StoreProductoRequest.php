@@ -49,7 +49,7 @@ class StoreProductoRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[\pL0-9\s.,()#%&+.\-]+$/u',
+                'regex:/^[\pL0-9\s.,()#%&+\-]+$/u',
             ]
             'contenido' => [
                 'required',

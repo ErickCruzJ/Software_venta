@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCatMarcaRequest extends FormRequest
 {
@@ -27,13 +28,15 @@ class UpdateCatMarcaRequest extends FormRequest
                 'required',
                 'string',
                 'max: 100',
-                Rule::unique(cat_carcas, 'nombre')
+                'regex:/^[\pL0-9\s-]+$/u',
+                Rule::unique('cat_carcas', 'nombre')
                     ->ignore($this->route('catMarca')->id_cat_marca, 'id_cat_marca'),
             ],
             'descripcion' => [
                 'nullable',
                 'string',
                 'max:255',
+                'regex:/^[\pL0-9\s.,()#%&+\-]*$/u',
             ],
             'estado'=> [
                 'required',
@@ -43,17 +46,6 @@ class UpdateCatMarcaRequest extends FormRequest
     }
     public function messages(): array
     {
-        return[
-            'nombre.required' => 'El nombre de la marca es obligatorio.',
-            'nombre.string' => 'El nombre de la marca debe ser texto.',
-            'nombre.max' => 'El nombre no puede exceder los 100 caracteres.',
-            'nombre.unique' => 'Ya existe una marca con ese nombre.',
-
-            'descripcion.string' => 'La descripción debe ser texto.',
-            'descripcion.max' => 'La descripción no puede exceder los 255 caracteres.',
-
-            'estado.required' => 'Debe indicar el estado.',
-            'estado.boolean' => 'El estado es inválido.',
-        ];
+        return(neW StoreCatMarcaRequest())->messages();
     }
 }

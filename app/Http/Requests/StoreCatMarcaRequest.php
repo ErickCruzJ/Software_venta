@@ -28,7 +28,7 @@ class StoreCatMarcaRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'regex:/^[\pL0-9\s-]+$/u'
+                'regex:/^[\pL0-9\s-]+$/u',
                 Rule::unique('cat_marcas','nombre'),
             ],
             'descripcion' => [

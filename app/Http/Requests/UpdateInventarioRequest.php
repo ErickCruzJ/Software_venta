@@ -44,19 +44,6 @@ class UpdateInventarioRequest extends FormRequest
     }
     public function messages():array
     {
-        return[
-            'id_producto.required' => 'Debe seleccionar un producto.',
-            'id_producto.exists' => 'El producto seleccionado no existe.',
-
-            'id_usuario.required' => 'Debe seleccionar un usuario.',
-            'id_usuario.exists' => 'El usuario seleccionado no existe.',
-
-            'cantidad.required' => 'Debe ingresar la cantidad.',
-            'cantidad.integer' => 'La cantidad debe ser un número entero.',
-            'cantidad.min' => 'La cantidad no puede ser negativa.',
-
-            'fecha_hora.required' => 'Debe indicar la fecha y hora.',
-            'fecha_hora.date' => 'La fecha y hora no son válidas.',
-        ];
+        return(new StoreInvetarioRequest())->messages();
     }
 }

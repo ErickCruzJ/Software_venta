@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateProductoRequest extends FormRequest
 {
@@ -42,11 +43,13 @@ class UpdateProductoRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
+                'regex:/^[\pL0-9\s.-]+$/u',
             ],
             'descripcion' => [
                 'required',
                 'string',
                 'max:255',
+                'regex:/^[\pL0-9\s.,()#%&+\-]+$/u',
             ],
             'contenido' => [
                 'required',
@@ -55,16 +58,27 @@ class UpdateProductoRequest extends FormRequest
             ],
             'unidad_medida' => [
                 'required',
-                'ln: pz, L, ml, g, kg, oz',
+                Rule::ln([
+                    'pz', 
+                    'L', 
+                    'ml', 
+                    'g', 
+                    'kg', 
+                    'oz',
+                ]),
             ],
             'presentacion'=>[
                 'required',
                 'string',
                 'max:50',
+                'regex:/^[\pL0-9\s.,()#%&+\-]+$/u',
             ],
             'estado' => [
                 'required',
-                'in:Disponible, Agotado',
+                Rule::in([
+                    'Disponible', 
+                    'Agotado',
+                ]),
             ],
         ];
     }

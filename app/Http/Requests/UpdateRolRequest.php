@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRolRequest extends FormRequest
 {
@@ -27,6 +28,7 @@ class UpdateRolRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
+                'regex:/^[\pL0-9\s]+$/u',
                 Rule::unique('role', 'nombre')
                     ->ignore($this->route('rol')->id_rol, 'id_rol'),
             ],
@@ -34,6 +36,7 @@ class UpdateRolRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
+                'regex:/^[\pL0-9\s.,()#%&+\-]+$/u',
             ],
             'esatdo' => [
                 'required',
@@ -43,16 +46,6 @@ class UpdateRolRequest extends FormRequest
     }
     public function messages(): array
     {
-        return[
-            'nombre.required' => 'El nombre del rol es obligatorio.',
-            'nombre.unique' => 'Ya existe un rol con ese nombre.',
-            'nombre.max' => 'El nombre no puede superar los 100 caracteres.',
-
-            'descripcion.required' => 'La descripción es obligatoria.',
-            'descripcion.max' => 'La descripción no puede superar los 255 caracteres.',
-
-            'estado.required' => 'Debe indicar el estado.',
-            'estado.boolean' => 'El estado no es válido.',
-        ]:
+        return(new StoreRolRequest())->messages();
     }
 }
