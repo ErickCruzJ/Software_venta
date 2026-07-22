@@ -87,6 +87,23 @@ export default function Create(){
                                     {...register('apellido_materno')}
                                     error={errors.apellido_materno?.message}
                                 />
+                                <FormInput
+                                    label="Telefono"
+                                    {...register('telefono')}
+                                    error={errors.telefono?.message}
+                                />
+                                <FormInput
+                                    label="Corrreo electronico"
+                                    type='email'
+                                    {...register('correo')}
+                                    error={errors.correo?.message}
+                                />
+                                <FormDate
+                                    label = "Fecha de  comtratacion"
+                                    {...register('fecha_contratacion')}
+                                    error={errors.fecha_contratacion?.message}
+                                />
+
                             </div>
 
                         </div>
