@@ -35,7 +35,7 @@ export default function Index({empleados}: Props){
         if (!termino){
             return empleados;
         }
-        
+
         return empleados.filter((empleado)=>{
             const nombreCompleto = `${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno ?? ''}`.toLowerCase();
 
@@ -130,7 +130,7 @@ export default function Index({empleados}: Props){
                     />
                     <PrimaryButton
                         type="button"
-                        onClick={()=> router.visit('/emoleados/create')}
+                        onClick={()=> router.visit('/empleados/create')}
                     >
                         <span className='flex items-center gap-2'>
                             <Plus size={18}/>
