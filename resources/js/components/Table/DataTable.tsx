@@ -1,9 +1,9 @@
 import {ReactNode} from 'react';
 
 interface Column<T>{
-    key: string;
+    key: keyof T | string;
     label: string;
-    render: (item: T) => ReactNode;
+    render?: (item: T) => ReactNode;
 }
 
 interface DataTableProps<T>{
@@ -18,14 +18,14 @@ export default function DataTable<T>({
     rowKey,
 }:DataTableProps<T>){
     return(
-        <div className="overflow-hodden rounded-xl border border-gary-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
             <div className="overflow-x-auto">
                 <table className="w-full">
                     <thead className="bg-gray-50">
                         <tr>
                             {columns.map((column) =>(
                                 <th
-                                    key={column.key}
+                                    key={String(column.key)}
                                     className="px-6 px-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500"
                                 >
                                     {column.label}
@@ -33,7 +33,7 @@ export default function DataTable<T>({
                             ))}
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gary-200">
+                    <tbody className="divide-y divide-gray-200">
                         {data.map((item)=>(
                             <tr
                                 key={rowKey(item)}
@@ -41,10 +41,12 @@ export default function DataTable<T>({
                             >
                                 {columns.map((column)=>(
                                     <td
-                                        key={column.key}
+                                        key={String (column.key)}
                                         className="px-6 py-4 text-sm text-gray-700"
                                     >
-                                        {column.render(item)}
+                                        {column.render
+                                            ?column.render(item)
+                                            : String(item[column.key as keyof T] ?? '')}
                                     </td>
                                 ))}
                             </tr>

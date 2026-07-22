@@ -1,4 +1,5 @@
 import { TextareaHTMLAttributes } from "react";
+import FormError from "./FormError";
 
 interface FormTextareaProps
     extends TextareaHTMLAttributes<HTMLTextAreaElement>{
@@ -21,25 +22,29 @@ export default function FormTextarea({
             <textarea 
                 {...props}
                 className={`
-                    w-full resize-none rounded-lg border 
-                    bg-white px-4 py-2
+                    min-h-28
+                    w-full
+                    resize-none 
+                    rounded-lg 
+                    border 
+                    bg-white 
+                    px-4 
+                    py-2
                     text-gray-900
-                    placeholder: text-gray-400
-                    outline-none transition focus:ring-2
+                    placeholder:text-gray-400
+                    outline-none 
+                    transition 
+                    focus:ring-2
                     ${
                         error 
-                            ? 'border-red-500 focus:border-red-500 focus:rimg-red-100'
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-100'
                             : 'border-gray-300 focus:border-blue-500 focus:ring-blue-100'
                     }
                     ${className}
                 `}
             />
 
-            {error && (
-                <p className="mt-1 text-sm text-red-600">
-                    {error}
-                </p>
-            )}
+            <FormError message={error}/>
         </div>
     );
 }

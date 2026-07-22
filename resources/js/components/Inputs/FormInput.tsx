@@ -1,4 +1,5 @@
 import { InputHTMLAttributes } from "react";
+import FormError from "./FormError";
 
 interface FormInputProps
     extends InputHTMLAttributes<HTMLInputElement> {
@@ -35,11 +36,7 @@ interface FormInputProps
                         ${className}
                     `}
                 />
-                {error && (
-                    <p className="mt-q text-sm text-red-600">
-                        {error}
-                    </p>
-                )}
+                <FormError message={error}/>
             </div>
         );
     }
