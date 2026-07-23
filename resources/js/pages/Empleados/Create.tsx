@@ -1,4 +1,5 @@
 import { Head, router } from '@inertiajs/react'
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {useForm as useReactHookForm} from 'react-hook-form';
 import { z } from 'zod';
@@ -26,7 +27,7 @@ const schema = z.object({
     correo: z.string().email('Ingrese un correo váñido'),
     fecha_contratacion: z.string(),
     estado: z.string(),
-    foto: z.any().optional(),
+    foto: z.instanceof(File).optional(),
 });
 type FormData = z.infer<typeof schema>;
 
@@ -44,9 +45,14 @@ export default function Create(){
         },
     });
 
+    const [processing, setProcessing] = useState(false);
+
     const onSubmit = (data: FormData) => {
+        console.log(data);
+        setProcessing(true);
         router.post('/empleados',data,{
             forceFormData: true,
+            onFinish:()=>setProcessing(false),
         });
     };
     return(
@@ -116,15 +122,15 @@ export default function Create(){
                                 </FormSelect>
 
                                 <FormFile
-                                    label="Fotografia"
-                                    accept="image/*"
-                                    onChange={(e) =>
-                                        setValue(
-                                            'foto',
-                                            e.target.files?.[0]
-                                        )
+                                    label="Fotografía"
+                                    onFileChange={(file) => 
+                                        setValue('foto', file,{
+                                            shouldValidate: true,
+                                            shouldDirty: true,
+                                        })
                                     }
-                                    error={errors.foto?.message as string}
+                                    error={errors.foto?.message}
+                                    
                                 />
                             </div>
                         </div>
@@ -172,6 +178,15 @@ export default function Create(){
 
                             </div>
                         </div>
+                        {/*Botones*/}
+                        <div className='flex justify-end gap'>
+                            <PrimaryButton
+                                type="submit"
+                                disabled={processing}
+                            >
+                                {processing ? 'Guardando...' : 'Guardar'}
+                            </PrimaryButton>
+                        </div>
                     </form>
                 </div>
                
@@ -180,5 +195,3 @@ export default function Create(){
     
     );
 }
-
-

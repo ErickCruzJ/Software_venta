@@ -2,15 +2,18 @@ import { InputHTMLAttributes } from "react";
 import FormError from "./FormError";
 
 interface FormFileProps
-    extends Omit<InputHTMLAttributes<HTMLInputElement>,'type'>{
+    extends Omit<InputHTMLAttributes<HTMLInputElement>,'type'| 'onChange'>{
     label: string;
     error?: string;
+    onFileChange?: (file: File | undefined)=> void; 
+
 }
 
 export default function FormFile({
     label, 
     error,
     className ='',
+    onFileChange,
     ...props
 }: FormFileProps){
     return(
@@ -22,6 +25,10 @@ export default function FormFile({
             <input 
                 type="file"
                 {...props}
+                onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    onFileChange?.(file);
+                }}
                 className={`
                     block
                     w-full
@@ -33,7 +40,7 @@ export default function FormFile({
                     text-sm
                     text-gray-700
                     file:mr-4
-                    file:roundwd-md
+                    file:rounded-md
                     file:border-0
                     file:bg-blue-600
                     file:px-4
