@@ -21,8 +21,11 @@ Route::get('/empleados',[EmpleadoController::class, 'index'])->name('empleados.i
 Route::get('/empleados/create',[EmpleadoController::class, 'create'])->name('empleados.create');
 Route::post('/empleados',[EmpleadoController::class, 'store'])->name('empleados.store');
 Route::get('/empleados/{empleado}/edit',[EmpleadoController::class, 'edit'])->name('empleados.edit');
-Route::put('/empleados/{empleado}/',[EmpleadoController::class, 'update'])->name('empleados.update');
+Route::put('/empleados/{empleado}',[EmpleadoController::class, 'update'])->name('empleados.update');
 Route::delete('/empleados/{empleado:id_empleado}',[EmpleadoController::class, 'destroy'])->name('empleados.destroy');
+
+
+
 Route::middleware(['auth'])->group(function(){
    
 });

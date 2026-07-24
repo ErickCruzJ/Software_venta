@@ -8,6 +8,7 @@ use App\Models\Empleado;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia; 
 use Inertia\Response;
+use Illuminate\Support\Facades\Storage;
 
 class EmpleadoController extends Controller
 {
@@ -16,11 +17,11 @@ class EmpleadoController extends Controller
      */
     public function index() :Response
     {
-        $empleados = Empleado::orderBy('nombre')->get();
+       $empleados = Empleado::orderBy('id_empleado','desc')->get();
 
-        return Inertia::render('Empleados/Index',[
-            'empleados' => $empleados,
-        ]);
+       return Inertia::render('Empleados/Index',[
+            'empleados'=> $empleados,
+       ]);
     }
 
     /**
@@ -36,11 +37,28 @@ class EmpleadoController extends Controller
      */
     public function store(StoreEmpleadoRequest $request): RedirectResponse
     {
-        Empleado::create ($request->validated());
+      $datos = $request->validated();
 
-        return redirect()
-            ->route('empleados.index')
-            ->with('success', 'Empleados registrada correctamente. ');
+      dd([
+        'datos_validados' => $datos,
+        'request_all' => $request->all(),
+        'hasFile' => $request->hasFile('foto'),
+        'file' => $request->file('foto'),
+      ]);
+
+      if($request->hasFile('foto')){
+        $ruta = $request->file('foto')->store(
+            'empleados',
+            'public'
+        );
+        $datos['foto'] = $ruta;
+      }
+
+      Empleado::create($datos);
+
+      return redirect ()
+        ->route('empleados.index')
+        ->white('success','Emplead registrado con exito. ');
     }
 
     /**
@@ -57,7 +75,7 @@ class EmpleadoController extends Controller
     public function edit(Empleado $empleado): Response
     {
         return Inertia::render('Empleados/Edit',[
-            'empleado' => $empleado
+            'empleado' => $empleado,
         ]);
     }
 
@@ -66,10 +84,29 @@ class EmpleadoController extends Controller
      */
     public function update(UpdateEmpleadoRequest $request, Empleado $empleado): RedirectResponse
     {
-        $empleado -> update($request -> validated());
+        $datos = $request->validated();
+
+        dd([
+            'empleado' => $empleado,
+            'datos_validados' => $datos, 
+            'request_all' => $request->all(),
+            'hasFile' => $request->hasFile('foto'),
+            'file' => $request->file('foto'),
+        ]);
+
+        if($request->hasFile('foto')){
+            $rute = $request->file('foto')->store(
+                'empleados',
+                'public'
+            );
+            $datos['foto'] =$rute
+        }
+
+        $empleado->update($datos);
+
         return redirect()
             ->route('empleados.index')
-            ->with('success', 'Empleado actualizado correctamente. ');
+            ->with('success','Empleado actulaizadocorrectamente.');
     }
 
     /**
@@ -77,10 +114,14 @@ class EmpleadoController extends Controller
      */
     public function destroy(Empleado $empleado): RedirectResponse
     {
+        if ($empleado->foto && Storage::disk('public')->exists($empleado->foto)){
+            Storage::disk ('public')->delete($empleado->foto);
+        }
+
         $empleado->delete();
 
-        return redirect()
+        return redirevt()
             ->route('empleados.index')
-            ->with('success', 'Empledo eliminado corrcetamentre');
+            ->white('success','Empleado eliminado correctamenete.')
     }
 }

@@ -127,7 +127,7 @@ class StoreEmpleadoRequest extends FormRequest
             'numero.required' => 'El numero exterior es obligatorio.',
             'numero.regex' => 'Solo puede contenre números, letras y guiones.',
 
-            'codigo_postal.requierd' => 'El código postal es obligatorio.',
+            'codigo_postal.required' => 'El código postal es obligatorio.',
             'codigo_postal.digits' => 'El codigo postal debe contener exactamente 5 digitos.',
 
             'colonia.required' => 'La colonia es obligatoria.',
@@ -140,14 +140,14 @@ class StoreEmpleadoRequest extends FormRequest
             'ciudad.regex' => 'Solo puede contener letras, números, puntos, guines y espacios.',
 
             'telefono.required' => 'El numero de telefono es obligatorio',
-            'telefono.digits' => 'El telefono solo puede contener 10 dígitos',
+            'telefono.regex' => 'El telefono solo puede contener 10 dígitos',
             
             'correo.required' => 'El correo es obligatorio.',
             'correo.email' => 'Ingresa un correo electronico válido.',
             'correo.unique' => 'Este correo ya esta segustrado.',
 
             'fecha_contratacion.required' => 'La fecha de contratación es obligatoria.',
-            'fecha_contratacion.befor_or_equal' => 'La fecha de contratacion no puede ser futura.',
+            'fecha_contratacion.before_or_equal' => 'La fecha de contratacion no puede ser futura.',
 
             'foto.image' => 'El archivo seleccionado debe ser una imagen.',
             'foto.max' => 'La imagen no debe de duperar los 2MB.',
