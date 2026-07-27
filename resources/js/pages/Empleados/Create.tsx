@@ -50,7 +50,8 @@ export default function Create(){
     const [preview, setPreview] = useState<string | null>(null);
 
     const onSubmit = (data: FormData) => {
-        console.log(data);
+        console.log("Datos eniviados:", data);
+        console.log("Foto: ", data.foto);
 
         setProcessing(true);
 

@@ -52,7 +52,7 @@ export default function Index({empleados}: Props){
 
     function eliminarEmpleado(empleado:Empleado){
         const confirmar = window.confirm(
-            `¿Deseas eliminar al empleado "{empleado.nombre}"?`
+            `¿Deseas eliminar al empleado "${empleado.nombre}"?`
         );
         if(!confirmar){
             return;
@@ -80,6 +80,7 @@ export default function Index({empleados}: Props){
         {
             key:'fecha_contratacion',
             label: 'Fecha contratación',
+            render: (empleado: Empleado) => new Date(empleado.fecha_contratacion).toLocaleDateString('es-MX'),
         },
         {
             key: 'estado',

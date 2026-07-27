@@ -39,13 +39,6 @@ class EmpleadoController extends Controller
     {
       $datos = $request->validated();
 
-      dd([
-        'datos_validados' => $datos,
-        'request_all' => $request->all(),
-        'hasFile' => $request->hasFile('foto'),
-        'file' => $request->file('foto'),
-      ]);
-
       if($request->hasFile('foto')){
         $ruta = $request->file('foto')->store(
             'empleados',
@@ -58,7 +51,7 @@ class EmpleadoController extends Controller
 
       return redirect ()
         ->route('empleados.index')
-        ->white('success','Emplead registrado con exito. ');
+        ->with('success','Emplead registrado con exito. ');
     }
 
     /**
@@ -120,8 +113,8 @@ class EmpleadoController extends Controller
 
         $empleado->delete();
 
-        return redirevt()
+        return redirect()
             ->route('empleados.index')
-            ->white('success','Empleado eliminado correctamenete.');
+            ->with('success','Empleado eliminado correctamenete.');
     }
 }
