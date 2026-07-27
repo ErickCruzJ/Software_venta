@@ -64,23 +64,52 @@ export default function Index({empleados}: Props){
             key: 'nombre',
             label: 'Empleado',
             render: (empleado: Empleado) => (
-                <span className='font-medium text-gray-900'>
-                    {empleado.nombre} {empleado.apellido_paterno} {empleado.apellido_paterno}
-                </span>
+                <div className='flex items-center gap-4'>
+                    <img 
+                        src={
+                            empleado.foto
+                                ? `/storage/${empleado.foto}`
+                                : `/images/user-default.png`
+                        }
+                        alt="Empleado"
+                        className='h-14 w-14 rounded-full object-cover border-2 border-gray-200 shadow-sm'
+                    />
+                    
+                    <div>
+                        <p className='font-semibold text-base text-gray-900 dark:text-white'>
+                            {empleado.nombre} {' '}
+                            {empleado.apellido_paterno} {' '} 
+                            {empleado.apellido_materno}
+                        </p>
+
+                        <p className='text-sm text-gray-500'>
+                            {empleado.correo}
+                        </p>
+                    </div>
+
+                </div>
+
             ),
         },
         {
             key: 'telefono',
             label: 'Telefono',
-        },
-        {
-            key: 'correo',
-            label: 'Correo',
+            render: (empleado: Empleado)=>(
+                <span className='font-medium'>
+                    {empleado.telefono}
+                </span>
+            )
         },
         {
             key:'fecha_contratacion',
             label: 'Fecha contratación',
-            render: (empleado: Empleado) => new Date(empleado.fecha_contratacion).toLocaleDateString('es-MX'),
+            render: (empleado: Empleado) => new Intl.DateTimeFormat('es-MX',{
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+            }).format(
+                new Date(empleado.fecha_contratacion)
+            ),
         },
         {
             key: 'estado',
@@ -115,22 +144,22 @@ export default function Index({empleados}: Props){
 
             <div className="space-y-6">
 
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900">
+                <div className='mb-6'>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
                         Empleados
                     </h1>
 
-                    <p className="mt-1 text-sm text-gray-500">
-                        Administra los empleados del sistema.
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        {empleadosFiltrados.length} empleados registrados
                     </p>
                 </div>
 
-                <Toolbar title="Lista de empleados">
+                <Toolbar title="">
 
                     <SearchInput
                         value={search}
                         onChange={setSearch}
-                        placeholder="Buscar empleado..."
+                        placeholder="Buscar nombre, correo o telefono..."
                     />
 
                     <PrimaryButton

@@ -34,13 +34,13 @@ class StoreEmpleadoRequest extends FormRequest
                 'required',
                 'string',
                 'max:50',
-                'regex:/^[\pL]+$/u',
+                'regex:/^[\pL\s]+$/u',
             ],
             'apellido_materno'=>[
                 'nullable',
                 'string',
                 'max:50',
-                'regex:/^[\pL]+$/u',
+                'regex:/^[\pL\s]+$/u',
             ],
             'calle' =>[
                 'required',
