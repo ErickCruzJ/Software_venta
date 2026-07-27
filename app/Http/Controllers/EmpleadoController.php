@@ -99,7 +99,7 @@ class EmpleadoController extends Controller
                 'empleados',
                 'public'
             );
-            $datos['foto'] =$rute
+            $datos['foto'] =$rute;
         }
 
         $empleado->update($datos);
@@ -122,6 +122,6 @@ class EmpleadoController extends Controller
 
         return redirevt()
             ->route('empleados.index')
-            ->white('success','Empleado eliminado correctamenete.')
+            ->white('success','Empleado eliminado correctamenete.');
     }
 }

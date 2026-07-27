@@ -37,7 +37,7 @@ export default function FormDate({
                     ${
                         error 
                         ?'border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-200'
-                        :'border-gray-300 focus:border-blue-500 focus: ring-2 focus:ring-blue-200'
+                        :'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
                     }
                     ${className}
                 `} 

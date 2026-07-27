@@ -1,83 +1,92 @@
-import { Head, router } from '@inertiajs/react'
+import { Head, router } from "@inertiajs/react";
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {useForm as useReactHookForm} from 'react-hook-form';
 import { z } from 'zod';
 
-import MainLayout from '@/components/layout/MainLayout';
-import PrimaryButton from '@/components/Buttons/PrimaryButton';
+import PrimaryButton from "@/components/Buttons/PrimaryButton";
 
-import FormInput from '@/components/Inputs/FormInput';
-import FormTextarea from '@/components/Inputs/FormTextarea';
-import FormDate from '@/components/Inputs/FormDate';
-import FormFile from '@/components/Inputs/FormFile';
-import FormSelect from '@/components/Inputs/FormSelect'; 
+import FormInput from "@/components/Inputs/FormInput";
+import FormDate from "@/components/Inputs/FormDate";
+import FormFile from "@/components/Inputs/FormFile";
+import FormSelect from "@/components/Inputs/FormSelect";
 
 const schema = z.object({
     nombre: z.string().min(1, 'El nombre es obligatorio'),
-    apellido_paterno: z.string().min(1, 'El apellido es obligatorio'),
-    apellido_materno: z.string().optional(),
-    calle: z.string().min(1),
-    numero: z.string().min(1),
-    codigo_postal: z.string().min(1),
-    colonia: z.string().min(1),
-    alcaldia: z.string().min(1),
-    ciudad: z.string().min(1),
-    telefono: z.string().min(1),
-    correo: z.string().email('Ingrese un correo váñido'),
-    fecha_contratacion: z.string(),
-    estado: z.string(),
+    apellido_paterno: z.string().min(1,'El apellido paterno es obligatorio'),
+    apellido_materno:z.string().optional(),
+    calle: z.string().min(1,'Este campo es obligatorio. '),
+    numero: z.string().min(1,'Este campo es obligatorio. '),
+    codigo_postal: z.string().min(1,'Este campo es obligatorio. '),
+    colonia: z.string().min(1,'Este campo es obligatorio. '),
+    alcaldia: z.string().min(1,'Este campo es obligatorio. '),
+    ciudad: z.string().min(1,'Este campo es obligatorio. '),
+    telefono: z.string().min(1,'Este campo es obligatorio. '),
+    correo: z.string().email('Ingresa un corro valido'),
+    fecha_contratacion: z.string().min(1,'Este campo es obligatorio. '),
+    estado: z.string().min(1,'Seleccionar un estado.'),
     foto: z.instanceof(File).optional(),
 });
 type FormData = z.infer<typeof schema>;
 
 export default function Create(){
-
-    const {
+    const{
         register,
         handleSubmit,
         setValue,
-        formState: {errors},
-    }=useReactHookForm<FormData>({
-        resolver:zodResolver(schema),
+        formState:{ errors },
+    } = useForm<FormData>({
+        resolver: zodResolver(schema),
+
         defaultValues: {
             estado: 'Activo',
+
+            foto: undefined,
         },
     });
 
     const [processing, setProcessing] = useState(false);
 
+    const [preview, setPreview] = useState<string | null>(null);
+
     const onSubmit = (data: FormData) => {
         console.log(data);
+
         setProcessing(true);
-        router.post('/empleados',data,{
+
+        router.post('/empleados', data,{
             forceFormData: true,
-            onFinish:()=>setProcessing(false),
+
+            onFinish: () =>{
+                setProcessing(false);
+            },
         });
+
     };
+
     return(
         <>
-            <Head title='Nuevo empleado'/>
+            <Head title="Nuevo Empleado"/>
             <>
-                <div className='space-y-6'>
+                <div className="space-y-6">
                     <div>
-                        <h1 className='text-2xl font-bold text-gary-900 dark:text-white'>
-                            Nuevo empledo
+                        <h1 className="text-2xl font-bold text-gray-900  dark:text-white">
+                            Nuevo empleado
                         </h1>
                         <p className='text-sm text-gray-500 dark:text-gray-400'>
-                            Registros de nuevos empleados
+                            Registro de nuevos empleados
                         </p>
                     </div>
-                    <form 
+                    <form
                         onSubmit={handleSubmit(onSubmit)}
-                        className='space-y-8'
+                        className="space-y-8"
                     >
                         {/*Datos personales*/}
-                        <div className='rounded-xl border bg-white p-6 shadow-sm dark:border-gray-700 datk:br-gray-800'>
-                            <h2 className='mb-5 text-lg font-semibold'>
+                        <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-gray-700 dark:br-gray-800">
+                            <h2 className="mb-5 text-lg font-semibold">
                                 Datos personales
                             </h2>
-                            <div className='grid grid-cols-1 gap-5 md:grid-cols-2'>
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                                 <FormInput
                                     label="Nombre"
                                     {...register('nombre')}
@@ -120,18 +129,33 @@ export default function Create(){
                                     <option value="Baja temporal">Baja temporal</option>
                                     <option value="Baja">Baja</option>
                                 </FormSelect>
-
                                 <FormFile
-                                    label="Fotografía"
-                                    onFileChange={(file) => 
+                                    label='Fotografía'
+                                    accept="image/*"
+                                    onFileChange={(file)=>{
+
+                                        console.log('Archivo seleccionado: ', file);
+
                                         setValue('foto', file,{
                                             shouldValidate: true,
                                             shouldDirty: true,
-                                        })
-                                    }
+                                        });
+                                        if(file){
+                                            setPreview(URL.createObjectURL(file));
+                                        }else{
+                                            setPreview(null);
+                                        }
+                                    }}
                                     error={errors.foto?.message}
-                                    
                                 />
+                                {preview && (
+                                    <div className="mt-3">
+                                        <img 
+                                            src={preview} 
+                                            alt="Vista previa" 
+                                            className="h-32 w-32 rounded-lg border object-cover"/>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         {/*Direccion*/}
@@ -178,8 +202,8 @@ export default function Create(){
 
                             </div>
                         </div>
-                        {/*Botones*/}
-                        <div className='flex justify-end gap'>
+                         {/*Botones*/}
+                        <div className='flex justify-end gap-4'>
                             <PrimaryButton
                                 type="submit"
                                 disabled={processing}
@@ -188,10 +212,10 @@ export default function Create(){
                             </PrimaryButton>
                         </div>
                     </form>
+
                 </div>
-               
             </>
         </>
-    
     );
+
 }

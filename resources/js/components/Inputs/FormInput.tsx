@@ -25,7 +25,7 @@ interface FormInputProps
                         w-full rounded-lg border 
                         bg-white px-4 py-2
                         text-gray-900
-                        placeholder: text-gray-200
+                        placeholder:text-gray-200
                         outline-none transition
                         focus:ring-2
                         ${

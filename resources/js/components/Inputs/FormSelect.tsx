@@ -22,6 +22,7 @@ export default function FormSelect({
             </label>
 
             <select 
+                {...props}
                 className={`
                     w-full rounded-lg border
                     bg-white px-4 py-2
