@@ -79,27 +79,22 @@ class EmpleadoController extends Controller
     {
         $datos = $request->validated();
 
-        dd([
-            'empleado' => $empleado,
-            'datos_validados' => $datos, 
-            'request_all' => $request->all(),
-            'hasFile' => $request->hasFile('foto'),
-            'file' => $request->file('foto'),
-        ]);
-
         if($request->hasFile('foto')){
-            $rute = $request->file('foto')->store(
+            if ($empleado->foto){
+                Storage::disk('public')->delete($empleado->foto);
+            }
+            $ruta = $request->file('foto')->store(
                 'empleados',
                 'public'
             );
-            $datos['foto'] =$rute;
+            $datos['foto'] =$ruta;
         }
 
         $empleado->update($datos);
 
         return redirect()
             ->route('empleados.index')
-            ->with('success','Empleado actulaizadocorrectamente.');
+            ->with('success','Empleado actulaizado correctamente.');
     }
 
     /**

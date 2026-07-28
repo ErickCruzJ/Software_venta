@@ -28,13 +28,13 @@ class UpdateEmpleadoRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'regex: /^[\pL\s]+$/u',
+                'regex:/^[\pL\s]+$/u',
             ],
-            'apellido_paterni'=>[
+            'apellido_paterno'=>[
                 'required',
                 'string',
                 'max:50',
-                'regex: /^[\pL\s]+$/u',
+                'regex:/^[\pL\s]+$/u',
             ],
             'apellido_materno'=>[
                 'nullable',
@@ -46,17 +46,17 @@ class UpdateEmpleadoRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'regex: /^[ A-Za-z0-9-]+/u',
+                'regex:/^[\pL0-9\s\-]+/u',
             ],
             'numero'=>[
                 'required',
                 'string',
                 'max:10',
-                'regex: /^[ A-Za-z0-9-]+/u',
+                'regex:/^[ A-Za-z0-9\s\-]+/u',
             ],
             'codigo_postal' => [
                 'required',
-                'regex: /^[0-9]{5}',
+                'regex:/^[0-9]{5}$/u',
             ],
             'colonia' => [
                 'required',
@@ -66,7 +66,7 @@ class UpdateEmpleadoRequest extends FormRequest
             ],
             'alcaldia' =>[
                 'required',
-                'strign',
+                'string',
                 'max:100',
                 'regex:/^[\pL0-9\s.-]+$/u',
             ],
@@ -85,8 +85,8 @@ class UpdateEmpleadoRequest extends FormRequest
                 'string',
                 'email',
                 'max:150',
-                Rule::unique('empleado','correo')
-                    ->ignore($this->route('empleado')->id_empleadio, 'id_empleado'),
+                Rule::unique('empleados','correo')
+                    ->ignore($this->route('empleado')->id_empleado, 'id_empleado'),
             ],
             'fecha_contratacion' => [
                 'required',
@@ -96,7 +96,7 @@ class UpdateEmpleadoRequest extends FormRequest
             'foto' =>[
                 'nullable',
                 'image',
-                'mimes: jps,jpeg,png,webp', 
+                'mimes: jpg,jpeg,png,webp', 
                 'max:2048',
             ],
             'estado' => [

@@ -10,7 +10,7 @@ import FormInput from "@/components/Inputs/FormInput";
 import FormDate from "@/components/Inputs/FormDate";
 import FormFile from "@/components/Inputs/FormFile";
 import FormSelect from "@/components/Inputs/FormSelect";
-import empleados from "@/routes/empleados";
+
 
 const schema = z.object({
     nombre: z.string().min(1, 'El nombre es obligatorio'),
@@ -44,7 +44,7 @@ interface Empleado{
     telefono: string;
     correo:string;
     fecha_contratacion: string;
-    estdo:string;
+    estado:string;
     foto?: string;
 }
 
@@ -73,11 +73,13 @@ export default function Edit({empleado}: Props){
             ciudad: empleado.ciudad,
 
             telefono: empleado.telefono,
-            correo: empleado.telefono,
+            correo: empleado.correo,
             
-            fecha_contratacion: empleado.fecha_contratacion.split("T")[0],
+            fecha_contratacion: empleado.fecha_contratacion
+                ? empleado.fecha_contratacion.split("T")[0]
+                :"",
 
-            estado: empleado.estdo,
+            estado: empleado.estado,
             
             foto: undefined,
         },
@@ -163,12 +165,98 @@ export default function Edit({empleado}: Props){
                                 {...register("correo")}
                                 error={errors.correo?.message}
                             />
+                            <FormDate
+                                label="Fecha de contratacion"
+                                {...register("fecha_contratacion")}
+                                error={errors.fecha_contratacion?.message}
+                            />
+                            <FormSelect
+                                label="Estado"
+                                {...register("estado")}
+                                error={errors.estado?.message}
+                            >
+                                <option value="Activo"> Activo</option>
+                                <option value="Suspendido">Suspendido</option>
+                                <option value="Vacaciones">Vacaciones</option>
+                                <option value="Baja temporal">Baja temporal</option>
+                                <option value="Baja,">Baja</option>
+                            </FormSelect>
+                            <FormFile
+                                label="Fotografia"
+                                accept="image/*"
+                                onFileChange={(file) => {
+                                    setValue("foto", file, {
+                                        shouldValidate: true,
+                                        shouldDirty: true,
+                                    });
+                                    if (file){
+                                        setPreview(
+                                            URL.createObjectURL(file)
+                                        );
+                                    }
+                                }}
+                                error={errors.foto?.message}
+                            />
+                            {preview &&(
+                                <div className="mt-3">
+                                    <img
+                                        src={preview}
+                                        alt="Vista previa"
+                                        className="h-32 w-32 rounded-lg border object-cover"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    {/*Direccion */}
+                    <div className="rounded-xl border bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                        <h2 className="mb-5 text-lg font-semibold">
+                            Dirección
+                        </h2>
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 ">
                             <FormInput
                                 label="Calle"
-                                {...register("calle")}
+                                {...register('calle')}
                                 error={errors.calle?.message}
                             />
+                            <FormInput
+                                label="Numero"
+                                {...register('numero')}
+                                error={errors.numero?.message}
+                            />
+                            <FormInput
+                            label="Código Postal"
+                            {...register('codigo_postal')}
+                            error={errors.codigo_postal?.message}
+                            />
+                            <FormInput
+                                label="Colonia"
+                                {...register('colonia')}
+                                error={errors.colonia?.message}
+                            />
+                            <FormInput
+                                label="Alcaldía / Municipio"
+                                {...register("alcaldia")}
+                                error={errors.alcaldia?.message}
+                            />
+
+                            <FormInput
+                                label="Ciudad"
+                                {...register("ciudad")}
+                                error={errors.ciudad?.message}
+                            />
                         </div>
+                    </div>
+                    {/*Botones */}
+                    <div className="flex justify-end gap-4">
+                        <PrimaryButton
+                            type="submit"
+                            disabled={processing}
+                        >
+                            {processing
+                                ?'Actualizando....'
+                                :'Actualizar empleado'}
+                        </PrimaryButton>
                     </div>
                 </form>
             </div>
