@@ -53,7 +53,7 @@ class RolController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(rol $rol):Response
+    public function edit(Rol $rol):Response
     {
         return Inertia::render('Roles/Edit',[
             'rol'=> $rol
@@ -63,7 +63,7 @@ class RolController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRolRequest $request, rol $rol):RedirectResponse
+    public function update(UpdateRolRequest $request, Rol $rol):RedirectResponse
     {
         $rol->update($request->validated());
         return redirect()
@@ -74,7 +74,7 @@ class RolController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(rol $rol):RedirectResponse
+    public function destroy(Rol $rol):RedirectResponse
     {
         $rol->delete();
         return redirect()

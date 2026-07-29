@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\RolController;
 
 Route::inertia('/', 'welcome')->name('home');
 
@@ -24,6 +25,12 @@ Route::get('/empleados/{empleado}/edit',[EmpleadoController::class, 'edit'])->na
 Route::put('/empleados/{empleado}',[EmpleadoController::class, 'update'])->name('empleados.update');
 Route::delete('/empleados/{empleado:id_empleado}',[EmpleadoController::class, 'destroy'])->name('empleados.destroy');
 
+Route::get('/roles',[RolController::class, 'index'])->name('roles.index');
+Route::get('/roles/create',[RolController::class, 'create'])->name('roles.create');
+Route::post('/roles',[RolController::class, 'store'])->name('roles.store');
+Route::get('/roles/{rol}/edit',[RolController::class, 'edit'])->name('roles.edit');
+Route::put('/roles/{rol}',[RolController::class, 'update'])->name('roles.update');
+Route::delete('/roles/{rol:id_rol}',[RolController::class, 'destroy'])->name('roles.destroy');
 
 
 Route::middleware(['auth'])->group(function(){

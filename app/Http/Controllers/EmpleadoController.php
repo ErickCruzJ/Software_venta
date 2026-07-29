@@ -80,14 +80,14 @@ class EmpleadoController extends Controller
         $datos = $request->validated();
 
         if($request->hasFile('foto')){
-            if ($empleado->foto){
-                Storage::disk('public')->delete($empleado->foto);
+            if ($empleado->foto &&
+                Storage::disk('public')->exists($empleado->foto)){
+                    Storage::disk('public')->delete($empleado->foto);
             }
-            $ruta = $request->file('foto')->store(
+            $datos['foto']= $request->file('foto')->store(
                 'empleados',
                 'public'
             );
-            $datos['foto'] =$ruta;
         }
 
         $empleado->update($datos);
