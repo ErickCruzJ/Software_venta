@@ -4,16 +4,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+import PrimaryButton from "@/components/Buttons/PrimaryButton";
 import FormInput from "@/components/Inputs/FormInput";
 import FormTextarea from "@/components/Inputs/FormTextarea";
-import PrimaryButton from "@/components/Buttons/PrimaryButton";
 import FormCheckbox from "@/components/Inputs/FormCheckbox";
 
-import {
-    FormActions,
-    FormCard,
-    FormPage,
-} from "@/components/Forms";
+import { FormActions, FormCard, FormPage, } from "@/components/Forms";
 
 const schema = z.object({
     nombre: z .string().min(1,"Este campo es obligatorio").max(100,"Maximo 100 caracteres"),
@@ -22,32 +18,48 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
-export default function Create(){
+interface Rol{
+    id_rol: number;
+    nombre: string;
+    descripcion: string;
+    estado: boolean;
+}
+
+interface Props{
+    rol: Rol;
+}
+
+export default function Edit({rol}:Props){
     const{
         register,
         handleSubmit,
-        formState: {errors},
+        setValue,
+        formState:{errors},
     } = useForm<FormData>({
         resolver: zodResolver(schema),
-
         defaultValues:{
-            estado: true,
+            nombre: rol.nombre,
+            descripcion: rol.descripcion,
+            estado: rol.estado,
         },
     });
 
     const [processing, setProcessing] = useState(false);
 
-    const onSubmit = (data: FormData) =>{
+    const onSubmit = (data: FormData) => {
         setProcessing(true);
 
-        router.post("/roles",data,
+        router.put(
+            `/roles/${rol.id_rol}`,
+            data,
             {
-                onFinish: () => setProcessing(false),
+                onFinish: ()=>{
+                    setProcessing(false);
+                },
             }
         );
     };
-
-    return(
+     return(
         <>
             <Head title="Nuevo Rol"/>
 

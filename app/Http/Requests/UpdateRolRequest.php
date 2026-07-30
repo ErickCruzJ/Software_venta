@@ -29,7 +29,7 @@ class UpdateRolRequest extends FormRequest
                 'string',
                 'max:100',
                 'regex:/^[\pL0-9\s]+$/u',
-                Rule::unique('role', 'nombre')
+                Rule::unique('roles', 'nombre')
                     ->ignore($this->route('rol')->id_rol, 'id_rol'),
             ],
             'descripcion' =>[
@@ -38,7 +38,7 @@ class UpdateRolRequest extends FormRequest
                 'max:255',
                 'regex:/^[\pL0-9\s.,()#%&+\-]+$/u',
             ],
-            'esatdo' => [
+            'estado' => [
                 'required',
                 'boolean',
             ],
