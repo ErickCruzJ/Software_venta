@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class StoreUsuarioRequest extends FormRequest
 {
@@ -26,17 +27,18 @@ class StoreUsuarioRequest extends FormRequest
         return [
             'id_empleado' => [
                 'required',
-                'exists: empelados, id_empleado',
+                'exists:empleados, id_empleado',
+                Rule::unique('usuarios','id_empleado'),
             ],
             'id_rol' => [
                 'required',
-                'exists:role,id_rol',
+                'exists:roles,id_rol',
             ],
             'nombre_usuario' => [
                 'required',
                 'string',
-                'min: 4',
-                'max: 50',
+                'min:4',
+                'max:50',
                 'regex:/^[\pL0-9#%&\-]+$/u',
                 Rule::unique('usuarios','nombre_usuario'),
             ],
@@ -51,8 +53,8 @@ class StoreUsuarioRequest extends FormRequest
             'estado' =>[
                 'required',
                 Rule::in([
-                    'Conecatado',
-                    'Desconecatdo', 
+                    'Conectado',
+                    'Desconectado', 
                     'Bloqueado', 
                     'Suspendido',
                 ]),

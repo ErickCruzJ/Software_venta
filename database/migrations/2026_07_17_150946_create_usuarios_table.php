@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_usuario');
             $table->foreignId('id_empleado')
                 ->constrained('empleados','id_empleado')
+                ->unique()
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
             $table->foreignId('id_rol')
