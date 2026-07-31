@@ -61,6 +61,17 @@ export default function Index({empleados}: Props){
     }
     const columns =[
         {
+            key: 'id_empleado',
+            label: 'ID',
+            render: (empleado: Empleado) => (
+                <div>
+                    <p className="font-semibold text-base text-gray-900 dark:text-white">
+                        {empleado.id_empleado}
+                    </p>
+                </div>
+            )
+        },
+        {
             key: 'nombre',
             label: 'Empleado',
             render: (empleado: Empleado) => (

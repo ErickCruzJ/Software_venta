@@ -50,6 +50,18 @@ export default function Index({ roles }:Props){
 
     const columns = [
         {
+            key:"id_rol",
+            label: "ID",
+            render: (rol: Rol) => (
+                <div>
+                    <p className="font-semibold text-base text-gray-900 dark:text-white">
+                        {rol.id_rol}
+                    </p>
+                </div>
+               
+            )
+        },
+        {
             key:"nombre",
             label: "Nombre",
 

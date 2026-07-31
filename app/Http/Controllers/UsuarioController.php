@@ -18,9 +18,9 @@ class UsuarioController extends Controller
      */
     public function index():Response
     {
-        $usuario = Usuario::orderBy('nombre_usuario')->get();
+        $usuarios = Usuario::orderBy('nombre_usuario')->get();
         return Inertia::render('Usuarios/Index',[
-            'usuario' => $usuarios,
+            'usuarios' => $usuarios,
         ]);
     }
 
@@ -29,6 +29,7 @@ class UsuarioController extends Controller
      */
     public function create(Empleado $empleado):Response
     {
+        
         if($empleado->usuario) {
             return redirect()
                 ->route('empleados.index')
@@ -37,7 +38,7 @@ class UsuarioController extends Controller
 
         $roles = Rol::where('estado',true)
             ->orderBy('nombre')
-            ->get();
+            ->get(['id_rol', 'nombre', 'descripcion',]);
         
         return Inertia::render('Usuarios/Create',[
             'empleado' => $empleado,
@@ -50,11 +51,25 @@ class UsuarioController extends Controller
      */
     public function store(StoreUsuarioRequest $request):RedirectResponse
     {
-        Usuario::create($request->validated());
+        try{
+            $datos = $request->validated();
 
-        return redirect()
-            ->route('usuarios.index')
-            ->with('success','Usuario creado correctmente');
+            $datos['estado'] = 'Desconectado';
+
+            Usuario::create($datos);
+
+            return redirect()
+                ->route('usuarios.index')
+                ->with('success','Usuario creado correctmente');
+        }catch (\Throwable $e){
+            dd(
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            );
+        }
+
+        
     }
 
     /**

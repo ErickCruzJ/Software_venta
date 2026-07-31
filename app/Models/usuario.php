@@ -33,7 +33,7 @@ class Usuario extends Model
     }
     public function empleado():BelongsTo
     {
-        return $this->belomgsTo(Empleado::class,'id_empleado');
+        return $this->belongsTo(Empleado::class,'id_empleado');
     }
     public function inventarios(): HasMany
     {

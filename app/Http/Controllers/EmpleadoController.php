@@ -47,10 +47,10 @@ class EmpleadoController extends Controller
         $datos['foto'] = $ruta;
       }
 
-      Empleado::create($datos);
+      $empleado = Empleado::create($datos);
 
       return redirect()->route('usuarios.create',[
-        'empleado' => $empelado,
+        'empleado' => $empleado,
       ]);
     }
 

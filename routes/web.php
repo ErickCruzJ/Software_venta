@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\RolController;
+use App\Http\Controllers\UsuarioController;
 
 Route::inertia('/', 'welcome')->name('home');
 
@@ -32,7 +33,7 @@ Route::get('/roles/{rol}/edit',[RolController::class, 'edit'])->name('roles.edit
 Route::put('/roles/{rol}',[RolController::class, 'update'])->name('roles.update');
 Route::delete('/roles/{rol:id_rol}',[RolController::class, 'destroy'])->name('roles.destroy');
 
-Route::get('/usuarios',[UsuarioController::class, 'index'])->name('usuario.index');
+Route::get('/usuarios',[UsuarioController::class, 'index'])->name('usuarios.index');
 Route::get('empleados/{empleado}/usuario',[UsuarioController::class, 'create'])->name('usuarios.create');
 Route::post('/usuarios',[UsuarioController::class, 'store'])->name('usuarios.store');
 Route::get('/usuarios/{usuario}/edit',[UsuarioController::class, 'edit'])->name('usuarios.edit');

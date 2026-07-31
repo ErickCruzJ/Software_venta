@@ -27,7 +27,7 @@ class StoreUsuarioRequest extends FormRequest
         return [
             'id_empleado' => [
                 'required',
-                'exists:empleados, id_empleado',
+                'exists:empleados,id_empleado',
                 Rule::unique('usuarios','id_empleado'),
             ],
             'id_rol' => [
@@ -50,15 +50,6 @@ class StoreUsuarioRequest extends FormRequest
                     ->numbers()
                     ->symbols(),
             ],
-            'estado' =>[
-                'required',
-                Rule::in([
-                    'Conectado',
-                    'Desconectado', 
-                    'Bloqueado', 
-                    'Suspendido',
-                ]),
-            ],
         ];
     }
     public function messages():array
@@ -78,9 +69,6 @@ class StoreUsuarioRequest extends FormRequest
 
             'password.required' => 'La contraseña es obligatoria.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
-
-            'estado.required' => 'Debe seleccionar un estado.',
-            'estado.in' => 'El estado seleccionado no es válido.',
         ];
     }
 }
