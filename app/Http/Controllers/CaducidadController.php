@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCaducidadRequest;
-use App\Http\Requests\UpdateCaducidad\Request;
-use App\Models\caducidad;
+use App\Http\Requests\UpdateCaducidadRequest;
+use App\Models\Caducidad;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,7 +16,7 @@ class CaducidadController extends Controller
      */
     public function index(): Response
     {
-        $caducidad = Caducidad::orderBy('nombre')->ge();
+        $caducidad = Caducidad::orderBy('nombre')->get();
 
         return Inertia::render('Caducidades/Index',[
             'caducidad' => $caducidad,
@@ -55,7 +55,7 @@ class CaducidadController extends Controller
      */
     public function edit(caducidad $caducidad):Response
     {
-        return Inertia::render('Caduciudades/Edit',[
+        return Inertia::render('Caducidades/Edit',[
             'caducidad' => $caducidad
         ]);
     }
@@ -68,7 +68,7 @@ class CaducidadController extends Controller
         $caducidad ->update($request->validated());
         return redirect()
             ->route('caducidades.index')
-            ->white('success', 'Caducidad actualizada correctamente. ');
+            ->with('success', 'Caducidad actualizada correctamente. ');
     }
 
     /**

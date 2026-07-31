@@ -6,9 +6,7 @@ import { z } from "zod";
 
 import PrimaryButton from "@/components/Buttons/PrimaryButton";
 
-import FormTextarea from "@/components/Inputs/FormTextarea";
 import FormInput from "@/components/Inputs/FormInput";
-import FormCheckbox from "@/components/Inputs/FormCheckbox";
 import FormSelect from "@/components/Inputs/FormSelect";
 
 import { FormActions, FormCard, FormPage, } from "@/components/Forms";
