@@ -9,14 +9,22 @@ import PrimaryButton from "@/components/Buttons/PrimaryButton";
 import FormInput from "@/components/Inputs/FormInput";
 import FormSelect from "@/components/Inputs/FormSelect";
 
+
 import { FormActions, FormCard, FormPage, } from "@/components/Forms";
+import Avatar from "@/components/Avatar/Index";
 
 const schema = z.object({
     id_rol: z.number(),
     nombre_usuario: z.string().min(6, "Minimo 6 caracteres").max(50,"Maximo 50 caracteres"),
     password: z.string().min(8, "La contraseña debe tener al menos 8 caracteres"),
     password_confirmation: z.string(),
-});
+}).refine(
+    (data) => data.password === data.password_confirmation,
+    {
+        message: "Las contraseñas no coinciden. ",
+        path: ["password_confirmation"],
+    }
+);
 type FormData = z.infer<typeof schema>;
 
 interface Empleado {
@@ -34,7 +42,7 @@ interface Rol{
 }
 
 interface Props{
-    empleado: Empleado;
+    empleado: Empleado | null;
     roles: Rol[];
 }
 
@@ -52,6 +60,8 @@ export default function Create({
 
     });
 
+    const esSinEmpleado = empleado === null;
+
     const [processing, setProcessing] = useState(false);
 
     const onSubmit = (data: FormData) => {
@@ -60,18 +70,10 @@ export default function Create({
             "/usuarios",
             {
                 ...data,
-                id_empleado: empleado.id_empleado,
+                id_empleado: empleado?.id_empleado ??null,
             },
             {
-                onSuccess: () => {
-                    console.log("Usuario creado correctamente. ");
-                },
-                onError: (errors) => {
-                    console.error(errors);
-                },
-                onFinish: () => {
-                    setProcessing(false);
-                },
+               onFinish: () => setProcessing(false),
             }
         );
     };
@@ -93,37 +95,51 @@ export default function Create({
                         className="space-y-8"
                     >
                         <FormCard
-                            title="Informacion del Emoleado"
+                            title={
+                                esSinEmpleado
+                                    ?"Información del Usuario"
+                                    :"Información del Empleado"
+                            }
                             columns={1}
                         >
-                            <div className="flex items-center gap-5">
-                                {empleado.foto?(
-                                    <img 
-                                        src={`/storage/${empleado.foto}`} 
-                                        alt="Empleado" 
-                                        className="h-20 w-20 rounded-full border-2 border-gray-200 object-cover shadow-sm"
+                            {esSinEmpleado ?(
+                                <div className="flex items-center gap-5">
+                                    <Avatar 
+                                        nombre="Usuario"
+                                        size="lg"
                                     />
-                                ):(
-                                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 text-3xl font-bold text-blue-700 shadow-sm ">
-                                        {empleado.nombre.charAt(0).toUpperCase()}
+                                    <div>
+                                        <h3 className="text-lg font-semibold">
+                                            Usuario sin empleado
+                                        </h3>
+                                        <p className="text-lg font-semibold">
+                                            Esta cuenta no está asociada a ningún empleado.
+                                        </p>
                                     </div>
-                                )}
-                                <div className="space-y-1">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                        {empleado.nombre}{" "}
-                                        {empleado.apellido_paterno}{" "}
-                                        {empleado.apellido_materno}
-
-                                    </h3>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                                        {empleado.correo}
-                                    </p>
-                                    <p className="text-xs text-gray-400">
-                                        ID del empleado: {empleado.id_empleado}
-                                    </p>
                                 </div>
-                            </div>
-                
+                            ):(
+                                <div className="flex items-center gap-5">
+                                    <Avatar
+                                        nombre={empleado.nombre}
+                                        foto={empleado.foto}
+                                        size = "lg"
+                                    />
+                                    <div>
+                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                            {empleado.nombre}{" "}
+                                            {empleado.apellido_paterno}{" "}
+                                            {empleado.apellido_materno}
+
+                                        </h3>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                                            {empleado.correo}
+                                        </p>
+                                        <p className="text-xs text-gray-400">
+                                            ID del empleado: {empleado.id_empleado}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
                         </FormCard>
                         <FormCard
                             title="Seleccion de Rol"
@@ -149,7 +165,7 @@ export default function Create({
                                 ))}
                             </FormSelect>
                             {rolSeleccionado &&(
-                                <div className="rounded-lg border border-blue -200 bg-blue-50 p-4">
+                                <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
                                     <h3 className="font-semibold text-blue-700">
                                         Descripcion del rol
                                     </h3>
@@ -175,7 +191,7 @@ export default function Create({
                                 error={errors.password?.message}
                             />
                             <FormInput
-                                label="Cofirma contraseña"
+                                label="Cofirmar contraseña"
                                 type="password"
                                 {...register("password_confirmation")}
                                 error={errors.password_confirmation?.message}

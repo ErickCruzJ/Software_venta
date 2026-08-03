@@ -26,8 +26,8 @@ class StoreUsuarioRequest extends FormRequest
     {
         return [
             'id_empleado' => [
-                'required',
-                'exists:empleados,id_empleado',
+                'nullable',
+                Rule::exists('empleados','id_empleado'),
                 Rule::unique('usuarios','id_empleado'),
             ],
             'id_rol' => [

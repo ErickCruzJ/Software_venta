@@ -34,7 +34,8 @@ Route::put('/roles/{rol}',[RolController::class, 'update'])->name('roles.update'
 Route::delete('/roles/{rol:id_rol}',[RolController::class, 'destroy'])->name('roles.destroy');
 
 Route::get('/usuarios',[UsuarioController::class, 'index'])->name('usuarios.index');
-Route::get('empleados/{empleado}/usuario',[UsuarioController::class, 'create'])->name('usuarios.create');
+Route::get('empleados/{empleado}/usuario',[UsuarioController::class, 'createDesdeEmpleado'])->name('usuarios.create.empleado');
+Route::get('usuarios/sinempleado/create',[UsuarioController::class, 'createSinEmpleado'])->name('usuarios.create.sinempleado');
 Route::post('/usuarios',[UsuarioController::class, 'store'])->name('usuarios.store');
 Route::get('/usuarios/{usuario}/edit',[UsuarioController::class, 'edit'])->name('usuarios.edit');
 Route::put('/usuarios/{usuario}',[UsuarioController::class, 'update'])->name('usuarios.update');

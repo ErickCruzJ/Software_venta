@@ -18,7 +18,11 @@ class UsuarioController extends Controller
      */
     public function index():Response
     {
-        $usuarios = Usuario::orderBy('nombre_usuario')->get();
+        $usuarios = Usuario::with([
+            'empleado',
+            'rol',
+        ])
+        ->orderBy('nombre_usuario')->get();
         return Inertia::render('Usuarios/Index',[
             'usuarios' => $usuarios,
         ]);
@@ -27,10 +31,10 @@ class UsuarioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Empleado $empleado):Response
+    public function createDesdeEmpleado(Empleado $empleado):Response
     {
         
-        if($empleado->usuario) {
+        if($empleado->usuario()->exists()) {
             return redirect()
                 ->route('empleados.index')
                 ->with('error', 'Esate empleado ya tiene una cuenta de usuario.');
@@ -46,28 +50,36 @@ class UsuarioController extends Controller
         ]);
     }
 
+    public function createSinEmpleado():Response
+    {
+        $roles = Rol::where('estado', true)
+            ->orderBy('nombre')
+            ->get([
+                'id_rol',
+                'nombre',
+                'descripcion',
+            ]);
+        return Inertia::render('Usuarios/Create',[
+            'empleado' => null,
+            'roles' => $roles,
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreUsuarioRequest $request):RedirectResponse
     {
-        try{
-            $datos = $request->validated();
+        $datos = $request->validated();
 
-            $datos['estado'] = 'Desconectado';
+        $datos['estado'] = 'Desconectado';
 
-            Usuario::create($datos);
+        Usuario::create($datos);
 
-            return redirect()
-                ->route('usuarios.index')
-                ->with('success','Usuario creado correctmente');
-        }catch (\Throwable $e){
-            dd(
-                $e->getMessage(),
-                $e->getFile(),
-                $e->getLine()
-            );
-        }
+        return redirect()
+            ->route('usuarios.index')
+            ->with('success','Usuario creado correctmente');
+       
 
         
     }
