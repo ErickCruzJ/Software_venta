@@ -1,8 +1,8 @@
 import {useMemo, useState} from 'react';
 import {router} from '@inertiajs/react';
 import {Plus} from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 
-import MainLayout from '@/components/layout/MainLayout';
 import Toolbar from '@/components/Toolbar/Toolbar';
 import SearchInput from '@/components/Inputs/SearchInput';
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
@@ -10,6 +10,7 @@ import DataTable from '@/components/Table/DataTable';
 import StatusBadge from '@/components/Badge/StatusBadge';
 import EditButton from '@/components/Buttons/EditButton';
 import DeleteButton from '@/components/Buttons/DeleteButton';
+import Avatar from '@/components/Avatar/Avatar';
 
 interface Empleado {
     id_empleado: number;
@@ -21,6 +22,10 @@ interface Empleado {
     fecha_contratacion: string;
     foto?: string;
     estado: 'Activo' | 'Suspendido' | 'Vacaciones' | 'Baja temporal' | 'Baja' ;
+
+    usuario?: {
+        id_usuario: number;
+    }|null
 }
 interface Props{
     empleados: Empleado[];
@@ -59,6 +64,9 @@ export default function Index({empleados}: Props){
         }
         router.delete(`/empleados/${empleado.id_empleado}`);
     }
+    function crearUsuario (id: number){
+        router.visit(`/empleados/${id}/usuario`);
+    }
     const columns =[
         {
             key: 'id_empleado',
@@ -76,14 +84,10 @@ export default function Index({empleados}: Props){
             label: 'Empleado',
             render: (empleado: Empleado) => (
                 <div className='flex items-center gap-4'>
-                    <img 
-                        src={
-                            empleado.foto
-                                ? `/storage/${empleado.foto}`
-                                : `/images/user-default.png`
-                        }
-                        alt="Empleado"
-                        className='h-14 w-14 rounded-full object-cover border-2 border-gray-200 shadow-sm'
+
+                    <Avatar
+                        nombre={empleado.nombre}
+                        foto={empleado.foto}
                     />
                     
                     <div>
@@ -141,6 +145,21 @@ export default function Index({empleados}: Props){
                             editarEmpleado(empleado.id_empleado)
                         }
                     />
+                    {empleado.usuario ? (
+                        <span className='rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700'>
+                            Usuario creado
+                        </span>
+                    ):(
+                        <PrimaryButton 
+                            type = "button"
+                            onClick={()=>crearUsuario(empleado.id_empleado)}
+                        >
+                           <UserPlus size={16} />
+                           <span className='ml-2'>
+                                Crear usuario
+                            </span> 
+                        </PrimaryButton>
+                    )}
                     <DeleteButton
                         onClick={()=>
                             eliminarEmpleado(empleado)

@@ -91,7 +91,7 @@ export default function Create({
                 description="Registro del Usuario para inicio del sistema"
                 >
                     <form
-                        onSubmit={handleSubmit(onSubmit, (errors)=>console.log(errors))}
+                        onSubmit={handleSubmit(onSubmit)}
                         className="space-y-8"
                     >
                         <FormCard

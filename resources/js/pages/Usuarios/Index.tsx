@@ -33,7 +33,7 @@ interface Usuario{
     estado: "Conectado"|"Desconectado"|"Suspendido"|"Bloqueado";
     ultima_conexion?: string;
 
-    empleado: Empleado;
+    empleado: Empleado | null;
     rol: Rol;
 
 }
@@ -52,15 +52,21 @@ export default function Index({usuarios}:Props){
             return usuarios;
         }
         return usuarios.filter((usuario)=>{
-            const nombreCompleto = `${usuario.empleado.nombre} ${usuario.empleado.apellido_paterno} ${usuario.empleado.apellido_materno ?? ""}`.toLowerCase();
-            return(
-                usuario.nombre_usuario.toLowerCase().includes (termino) ||
-                nombreCompleto.includes(termino)||
-                usuario.empleado.correo.toLowerCase().includes(termino)||
-                usuario.rol.nombre.toLowerCase().includes(termino)||
+            const empleado = usuario.empleado;
+
+            const nombreCompleto = empleado
+                ?`${empleado.nombre} ${empleado.apellido_paterno} ${empleado.apellido_materno ?? ""}`.toLowerCase(): "";
+
+            const correo = empleado?.correo.toLowerCase() ?? "";
+
+            return (
+                usuario.nombre_usuario.toLowerCase().includes(termino) ||
+                nombreCompleto.includes(termino) ||
+                correo.includes(termino) ||
+                usuario.rol.nombre.toLowerCase().includes(termino) ||
                 usuario.estado.toLowerCase().includes(termino)
-            )
-        })
+            );
+        });
 
     }, [usuarios, search]);
 
@@ -90,23 +96,39 @@ export default function Index({usuarios}:Props){
             key: "empleado",
             label: "Empleado",
             render: (usuario: Usuario) => (
-                <div className="flex items-center gap-4">
-                   <Avatar
-                        nombre={usuario.empleado.nombre}
-                        foto={usuario.empleado.foto}
-                    />
-                   <div>
-                    <p className="font-semibold text-gray-900 dark:text-white">
-                        {usuario.empleado.nombre}{" "}
-                        {usuario.empleado.apellido_paterno}{" "}
-                        {usuario.empleado.apellido_materno}
-                    </p>
-
-                    <p className="text-sm text-gray-900 dark:text-white">
-                        {usuario.empleado.correo}
-                    </p>
-                   </div>
-                </div>
+                usuario.empleado ? (
+                    <div className='flex item-center gap-4'>
+                        <Avatar 
+                            nombre={usuario.empleado.nombre}
+                            foto={usuario.empleado.foto}
+                        />
+                        <div>
+                            <p className='font-semibild text-gray-900 dark:text-white'>
+                                {usuario.empleado.nombre}{" "}
+                                {usuario.empleado.apellido_paterno}{" "}
+                                {usuario.empleado.apellido_materno}
+                            </p>
+                            <p className='text-sm text-gray-900 dark:text-white'>
+                                {usuario.empleado.correo}
+                            </p>
+                        </div>
+                    </div>
+                ):(
+                    <div className='flex items-center gap-4'>
+                        <Avatar
+                            nombre="Usuario"
+                        />
+                        <div>
+                            <p className='font-semibold text-gray-900 dark:text-white'>
+                                Sin empleado
+                            </p>
+                            <p className='text-sm text-gray-500 dark:text-gray-400'>
+                                Cuenta independiente
+                            </p>
+                        </div>
+                    </div>
+                )
+                
             ),
         },
         {
@@ -186,15 +208,26 @@ export default function Index({usuarios}:Props){
                         onChange={setSearch}
                         placeholder='Buscar usuario, empleado, correo o rol...'
                     />
-                    <PrimaryButton
-                        type="button"
-                        onClick={()=>router.visit("/empleados")}
-                    >
-                        <span className='flex items-center gap-2'>
-                            <Plus size={18} />
-                            Nuevo Usuario
-                        </span>
-                    </PrimaryButton>
+                    <div>
+                        <PrimaryButton
+                            type="button"
+                            onClick={()=>router.visit("/usuarios/sinempleado/create")}
+                        >
+                            <Plus size={18}/>
+                            <span className='ml-2'>
+                                Usuario sin empleado
+                            </span>
+                        </PrimaryButton>
+                        <PrimaryButton
+                            type= "button"
+                            onClick={()=>router.visit("/empleados")}
+                        >
+                            <Plus size={18}/>
+                            <span className='ml-2'>
+                                Desde empleado
+                            </span>
+                        </PrimaryButton>
+                    </div>
                 </Toolbar>
                 <DataTable
                     columns={columns}

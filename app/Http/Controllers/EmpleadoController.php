@@ -17,7 +17,7 @@ class EmpleadoController extends Controller
      */
     public function index() :Response
     {
-       $empleados = Empleado::orderBy('id_empleado','desc')->get();
+       $empleados = Empleado::with('usuario')->orderBy('nombre')->get();
 
        return Inertia::render('Empleados/Index',[
             'empleados'=> $empleados,
