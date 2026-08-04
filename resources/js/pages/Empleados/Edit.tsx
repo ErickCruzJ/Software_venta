@@ -99,16 +99,20 @@ export default function Edit({empleado}: Props){
         
         setProcessing(true);
 
-        router.post(
-            `/empleados/${empleado.id_empleado}`,
-            {
-                ...data,
-                _method: "put",
-            },
+        const datos = {
+            ...data,
+            _method: "put",
+        };
+        if(!data.foto) {
+            delete datos.foto;
+        }
+
+        router.post (
+            `/empleado/${empleado.id_empleado}`,
+            datos,
             {
                 forceFormData: true,
-
-                onFinish: () => {
+                onFinish:() => {
                     setProcessing(false);
                 },
             }

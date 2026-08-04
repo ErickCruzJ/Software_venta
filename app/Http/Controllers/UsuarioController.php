@@ -97,8 +97,21 @@ class UsuarioController extends Controller
      */
     public function edit(Usuario $usuario):Response
     {
+        $usuario->load([
+            'empleado',
+            'rol',
+        ]);
+        $roles = Rol::where('estado', true)
+            ->orderBy('nombre')
+            ->get([
+                'id_rol',
+                'nombre',
+                'descripcion'
+            ]);
         return Inertia::render('Usuarios/Edit',[
-            'usuario' => $usuario
+            'usuario' => $usuario,
+            'empleado' => $usuario->empleado,
+            'roles' => $roles,
         ]);
     }
 
@@ -107,7 +120,14 @@ class UsuarioController extends Controller
      */
     public function update(UpdateUsuarioRequest $request, Usuario $usuario):RedirectResponse
     {
-        $usuario ->update($request->validated());
+        $datos = $request->validated();
+
+        if(empty($datos['password'])){
+            unset($datos['password']);
+        }
+
+        $usuario ->update($datos);
+        
         return redirect()
             ->route('usuarios.index')
             ->with('success', 'El usuario se actualizo con exito');

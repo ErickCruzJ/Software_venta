@@ -42,6 +42,7 @@ export default function Avatar({
             ${sizes[size].container}
             flex
             items-center
+            justify-center
             rounded-full
             bg-blue-100
             font-bold
