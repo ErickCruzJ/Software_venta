@@ -15,10 +15,10 @@ class Precio extends Model
         'fecha',
         'estado',
     ];
-    
-    public function casts():array
+
+    public function casts(): array
     {
-        return[
+        return [
             'fecha' => 'date',
             'estado' => 'boolean',
         ];
@@ -26,6 +26,6 @@ class Precio extends Model
 
     public function producto(): BelongsTo
     {
-        return $this->belonsTo(Producto::Class, 'id_producto');
+        return $this->belonsTo(Producto::class, 'id_producto');
     }
 }

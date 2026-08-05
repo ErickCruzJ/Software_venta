@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Empleado extends Model
 {
     protected $primaryKey = 'id_empleado';
+
     protected $fillable = [
         'nombre',
         'apellido_paterno',
@@ -24,12 +25,14 @@ class Empleado extends Model
         'foto',
         'estado',
     ];
-    protected function casts():array
+
+    protected function casts(): array
     {
-        return[
+        return [
             'fecha_contratacion' => 'date',
         ];
     }
+
     public function usuario(): HasOne
     {
         return $this->hasOne(Usuario::class, 'id_empleado');

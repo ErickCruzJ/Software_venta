@@ -29,7 +29,7 @@ class UpdateCategoriaRequest extends FormRequest
                 'string',
                 'max:100',
                 'regex:/^[\pL0-9\s-]+$/u',
-                Rule::unique('categorias','nombre')->ignore($this->categoria, 'id_categoria'),
+                Rule::unique('categorias', 'nombre')->ignore($this->categoria, 'id_categoria'),
             ],
             'descripcion' => [
                 'nullable',
@@ -43,7 +43,9 @@ class UpdateCategoriaRequest extends FormRequest
             ],
         ];
     }
-    public function messages(): array{
-        return(new StoreCategoriaRequest())->messages();
+
+    public function messages(): array
+    {
+        return (new StoreCategoriaRequest)->messages();
     }
 }

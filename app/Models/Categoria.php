@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[ObservedBy([CategoriaObserver::class])]
 class Categoria extends Model
 {
-
     protected $primaryKey = 'id_categoria';
 
     protected $fillable = [
@@ -18,7 +17,8 @@ class Categoria extends Model
         'descripcion',
         'estado',
     ];
-    protected function casts():array
+
+    protected function casts(): array
     {
         return [
             'estado' => 'boolean',
@@ -29,5 +29,4 @@ class Categoria extends Model
     {
         return $this->hasMany(Producto::class, 'id_categoria');
     }
-
 }

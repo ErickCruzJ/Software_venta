@@ -36,13 +36,13 @@ class StoreEmpleadoRequest extends FormRequest
                 'max:50',
                 'regex:/^[\pL\s]+$/u',
             ],
-            'apellido_materno'=>[
+            'apellido_materno' => [
                 'nullable',
                 'string',
                 'max:50',
                 'regex:/^[\pL\s]+$/u',
             ],
-            'calle' =>[
+            'calle' => [
                 'required',
                 'string',
                 'max:100',
@@ -54,51 +54,51 @@ class StoreEmpleadoRequest extends FormRequest
                 'max:10',
                 'regex:/^[A-Za-z0-9-]+$/u',
             ],
-            'codigo_postal'=>[
+            'codigo_postal' => [
                 'required',
                 'regex:/^[0-9]{5}$/u',
             ],
             'colonia' => [
                 'required',
-                'string', 
+                'string',
                 'max:100',
                 'regex:/^[\pL0-9\s.-]+$/u',
             ],
-            'alcaldia'=>[
+            'alcaldia' => [
                 'required',
                 'string',
                 'max:100',
                 'regex:/^[\pL0-9\s.-]+$/u',
             ],
-            'ciudad'=> [
+            'ciudad' => [
                 'required',
                 'string',
                 'max:100',
                 'regex:/^[\pL0-9\s.-]+$/u',
             ],
-            'telefono'=> [
+            'telefono' => [
                 'required',
                 'regex:/^[0-9]{10}$/u',
             ],
-            'correo'=> [
+            'correo' => [
                 'required',
                 'string',
                 'email',
                 'max:150',
-                Rule::unique('empleados','correo'),
+                Rule::unique('empleados', 'correo'),
             ],
-            'fecha_contratacion' =>[
+            'fecha_contratacion' => [
                 'required',
                 'date',
                 'before_or_equal:today',
             ],
-            'foto'=>[
+            'foto' => [
                 'nullable',
                 'image',
                 'mimes:jpg,jpeg,png,webp',
                 'max:2048',
             ],
-            'estado'=>[
+            'estado' => [
                 'required',
                 Rule::in([
                     'Activo',
@@ -110,9 +110,10 @@ class StoreEmpleadoRequest extends FormRequest
             ],
         ];
     }
-    public function messages (): array 
+
+    public function messages(): array
     {
-        return[
+        return [
             'nombre.required' => 'El nombre del empaldo es obligatorio.',
             'nombre.regex' => 'El nombre solo puede contener letrasy espacios.',
 
@@ -136,12 +137,12 @@ class StoreEmpleadoRequest extends FormRequest
             'alcaldia.required' => 'La alcaldia o municipio es obligatorio.',
             'alcaldia.regex' => 'Solo puede contener letras, números, puntos, guines y espacios.',
 
-            'ciudad.required'  => 'La cioudad es obligatoria.',
+            'ciudad.required' => 'La cioudad es obligatoria.',
             'ciudad.regex' => 'Solo puede contener letras, números, puntos, guines y espacios.',
 
             'telefono.required' => 'El numero de telefono es obligatorio',
             'telefono.regex' => 'El telefono solo puede contener 10 dígitos',
-            
+
             'correo.required' => 'El correo es obligatorio.',
             'correo.email' => 'Ingresa un correo electronico válido.',
             'correo.unique' => 'Este correo ya esta segustrado.',
@@ -153,7 +154,7 @@ class StoreEmpleadoRequest extends FormRequest
             'foto.max' => 'La imagen no debe de duperar los 2MB.',
 
             'estado.required' => 'Colar el estdo del empleqado.',
-            'estado.in' => 'Seccione un estado válido para el empleado'
+            'estado.in' => 'Seccione un estado válido para el empleado',
 
         ];
     }

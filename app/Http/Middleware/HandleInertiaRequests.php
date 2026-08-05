@@ -37,11 +37,32 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'name' => config('app.name'),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user()
+                    ?[
+                        'id_usuario' => $request->user()->id_usuario,
+                        'nombre_usuario' => $request->user()->nombre_usuario,
+                        'estado' => $request->user()->estado,
+
+                        'rol' => $request->user()->rol
+                            ?[
+                                'id_rol' => $request->user()->rol->id_rol,
+                                'nombre' => $request->user()->rol->nombre,
+                            ]
+                            :null,
+
+                        'empleado'=>$request->user()->empleado
+                            ?[
+                                'id_empleado' => $request->user()->empleado->id_empleado,
+                                'nombre' => $request->user()->empleado->nombre,
+                                'apellido_paterno' => $request->user()->empleado->apellido_paterno,
+                                'apellido_materno' => $request->user()->empleado->apellido_materno,
+                                'foto' => $request->user()->empleado->foto,
+                            ]
+                            :null,
+                    ]
+                    :null,
             ],
-            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
 }

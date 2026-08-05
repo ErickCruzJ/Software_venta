@@ -53,16 +53,17 @@ class StoreCaducidadRequest extends FormRequest
             'estado' => [
                 'required',
                 Rule::in([
-                    'Disponible', 
-                    'Vencido', 
+                    'Disponible',
+                    'Vencido',
                     'Vendido',
                 ]),
             ],
         ];
     }
+
     public function messages(): array
     {
-        return[
+        return [
             'id_inventario.required' => 'Debe seleccionar un inventario.',
             'id_inventario.exists' => 'El inventario seleccionado no existe.',
 

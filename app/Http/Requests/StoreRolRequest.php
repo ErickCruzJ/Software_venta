@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+
 class StoreRolRequest extends FormRequest
 {
     /**
@@ -42,9 +43,10 @@ class StoreRolRequest extends FormRequest
             ],
         ];
     }
+
     public function messages(): array
     {
-        return[
+        return [
             'nombre.required' => 'El nombre del rol es obligatorio.',
             'nombre.unique' => 'Ya existe un rol con ese nombre.',
             'nombre.max' => 'El nombre no puede superar los 100 caracteres.',

@@ -6,28 +6,28 @@ use App\Http\Requests\StoreEmpleadoRequest;
 use App\Http\Requests\UpdateEmpleadoRequest;
 use App\Models\Empleado;
 use Illuminate\Http\RedirectResponse;
-use Inertia\Inertia; 
-use Inertia\Response;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class EmpleadoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index() :Response
+    public function index(): Response
     {
-       $empleados = Empleado::with('usuario')->orderBy('nombre')->get();
+        $empleados = Empleado::with('usuario')->orderBy('nombre')->get();
 
-       return Inertia::render('Empleados/Index',[
-            'empleados'=> $empleados,
-       ]);
+        return Inertia::render('Empleados/Index', [
+            'empleados' => $empleados,
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() :Response
+    public function create(): Response
     {
         return Inertia::render('Empleados/Create');
     }
@@ -37,21 +37,21 @@ class EmpleadoController extends Controller
      */
     public function store(StoreEmpleadoRequest $request): RedirectResponse
     {
-      $datos = $request->validated();
+        $datos = $request->validated();
 
-      if($request->hasFile('foto')){
-        $ruta = $request->file('foto')->store(
-            'empleados',
-            'public'
-        );
-        $datos['foto'] = $ruta;
-      }
+        if ($request->hasFile('foto')) {
+            $ruta = $request->file('foto')->store(
+                'empleados',
+                'public'
+            );
+            $datos['foto'] = $ruta;
+        }
 
-      $empleado = Empleado::create($datos);
+        $empleado = Empleado::create($datos);
 
-      return redirect()->route('usuarios.create',[
-        'empleado' => $empleado,
-      ]);
+        return redirect()->route('usuarios.create', [
+            'empleado' => $empleado,
+        ]);
     }
 
     /**
@@ -67,7 +67,7 @@ class EmpleadoController extends Controller
      */
     public function edit(Empleado $empleado): Response
     {
-        return Inertia::render('Empleados/Edit',[
+        return Inertia::render('Empleados/Edit', [
             'empleado' => $empleado,
         ]);
     }
@@ -79,12 +79,12 @@ class EmpleadoController extends Controller
     {
         $datos = $request->validated();
 
-        if($request->hasFile('foto')){
+        if ($request->hasFile('foto')) {
             if ($empleado->foto &&
-                Storage::disk('public')->exists($empleado->foto)){
-                    Storage::disk('public')->delete($empleado->foto);
+                Storage::disk('public')->exists($empleado->foto)) {
+                Storage::disk('public')->delete($empleado->foto);
             }
-            $datos['foto']= $request->file('foto')->store(
+            $datos['foto'] = $request->file('foto')->store(
                 'empleados',
                 'public'
             );
@@ -94,7 +94,7 @@ class EmpleadoController extends Controller
 
         return redirect()
             ->route('empleados.index')
-            ->with('success','Empleado actulaizado correctamente.');
+            ->with('success', 'Empleado actulaizado correctamente.');
     }
 
     /**
@@ -102,14 +102,14 @@ class EmpleadoController extends Controller
      */
     public function destroy(Empleado $empleado): RedirectResponse
     {
-        if ($empleado->foto && Storage::disk('public')->exists($empleado->foto)){
-            Storage::disk ('public')->delete($empleado->foto);
+        if ($empleado->foto && Storage::disk('public')->exists($empleado->foto)) {
+            Storage::disk('public')->delete($empleado->foto);
         }
 
         $empleado->delete();
 
         return redirect()
             ->route('empleados.index')
-            ->with('success','Empleado eliminado correctamenete.');
+            ->with('success', 'Empleado eliminado correctamenete.');
     }
 }

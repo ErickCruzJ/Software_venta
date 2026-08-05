@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-usE Illuminate\Validation\Rule;
+use Illuminate\Validation\Rule;
 
 class UpdateEmpleadoRequest extends FormRequest
 {
@@ -30,25 +30,25 @@ class UpdateEmpleadoRequest extends FormRequest
                 'max:100',
                 'regex:/^[\pL\s]+$/u',
             ],
-            'apellido_paterno'=>[
+            'apellido_paterno' => [
                 'required',
                 'string',
                 'max:50',
                 'regex:/^[\pL\s]+$/u',
             ],
-            'apellido_materno'=>[
+            'apellido_materno' => [
                 'nullable',
                 'string',
                 'max:50',
                 'regex:/^[\pL\s]+$/u',
             ],
-            'calle' =>[
+            'calle' => [
                 'required',
                 'string',
                 'max:100',
                 'regex:/^[\pL0-9\s\-]+/u',
             ],
-            'numero'=>[
+            'numero' => [
                 'required',
                 'string',
                 'max:10',
@@ -64,7 +64,7 @@ class UpdateEmpleadoRequest extends FormRequest
                 'max:100',
                 'regex:/^[\pL0-9\s.-]+$/u',
             ],
-            'alcaldia' =>[
+            'alcaldia' => [
                 'required',
                 'string',
                 'max:100',
@@ -76,7 +76,7 @@ class UpdateEmpleadoRequest extends FormRequest
                 'max:100',
                 'regex:/^[\pL0-9\s.-]+$/u',
             ],
-            'telefono' =>[
+            'telefono' => [
                 'required',
                 'regex:/^[0-9]{10}$/u',
             ],
@@ -85,7 +85,7 @@ class UpdateEmpleadoRequest extends FormRequest
                 'string',
                 'email',
                 'max:150',
-                Rule::unique('empleados','correo')
+                Rule::unique('empleados', 'correo')
                     ->ignore($this->route('empleado')->id_empleado, 'id_empleado'),
             ],
             'fecha_contratacion' => [
@@ -93,10 +93,10 @@ class UpdateEmpleadoRequest extends FormRequest
                 'date',
                 'before_or_equal:today',
             ],
-            'foto' =>[
+            'foto' => [
                 'nullable',
                 'image',
-                'mimes: jpg,jpeg,png,webp', 
+                'mimes: jpg,jpeg,png,webp',
                 'max:2048',
             ],
             'estado' => [
@@ -111,8 +111,9 @@ class UpdateEmpleadoRequest extends FormRequest
             ],
         ];
     }
-    public function messages():array
+
+    public function messages(): array
     {
-        return (new StoreEmpleadoRequest())->messages();
+        return (new StoreEmpleadoRequest)->messages();
     }
 }

@@ -4,26 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
+use App\Models\Empleado;
+use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Empleado;
-use App\Models\Rol;
 
 class UsuarioController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index():Response
+    public function index(): Response
     {
         $usuarios = Usuario::with([
             'empleado',
             'rol',
         ])
-        ->orderBy('nombre_usuario')->get();
-        return Inertia::render('Usuarios/Index',[
+            ->orderBy('nombre_usuario')->get();
+
+        return Inertia::render('Usuarios/Index', [
             'usuarios' => $usuarios,
         ]);
     }
@@ -31,26 +32,26 @@ class UsuarioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function createDesdeEmpleado(Empleado $empleado):Response
+    public function createDesdeEmpleado(Empleado $empleado): Response
     {
-        
-        if($empleado->usuario()->exists()) {
+
+        if ($empleado->usuario()->exists()) {
             return redirect()
                 ->route('empleados.index')
                 ->with('error', 'Esate empleado ya tiene una cuenta de usuario.');
         }
 
-        $roles = Rol::where('estado',true)
+        $roles = Rol::where('estado', true)
             ->orderBy('nombre')
-            ->get(['id_rol', 'nombre', 'descripcion',]);
-        
-        return Inertia::render('Usuarios/Create',[
+            ->get(['id_rol', 'nombre', 'descripcion']);
+
+        return Inertia::render('Usuarios/Create', [
             'empleado' => $empleado,
             'roles' => $roles,
         ]);
     }
 
-    public function createSinEmpleado():Response
+    public function createSinEmpleado(): Response
     {
         $roles = Rol::where('estado', true)
             ->orderBy('nombre')
@@ -59,7 +60,8 @@ class UsuarioController extends Controller
                 'nombre',
                 'descripcion',
             ]);
-        return Inertia::render('Usuarios/Create',[
+
+        return Inertia::render('Usuarios/Create', [
             'empleado' => null,
             'roles' => $roles,
         ]);
@@ -68,7 +70,7 @@ class UsuarioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUsuarioRequest $request):RedirectResponse
+    public function store(StoreUsuarioRequest $request): RedirectResponse
     {
         $datos = $request->validated();
 
@@ -78,16 +80,14 @@ class UsuarioController extends Controller
 
         return redirect()
             ->route('usuarios.index')
-            ->with('success','Usuario creado correctmente');
-       
+            ->with('success', 'Usuario creado correctmente');
 
-        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(usuario $usuario)
+    public function show(Usuario $usuario)
     {
         //
     }
@@ -95,7 +95,7 @@ class UsuarioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Usuario $usuario):Response
+    public function edit(Usuario $usuario): Response
     {
         $usuario->load([
             'empleado',
@@ -106,9 +106,10 @@ class UsuarioController extends Controller
             ->get([
                 'id_rol',
                 'nombre',
-                'descripcion'
+                'descripcion',
             ]);
-        return Inertia::render('Usuarios/Edit',[
+
+        return Inertia::render('Usuarios/Edit', [
             'usuario' => $usuario,
             'empleado' => $usuario->empleado,
             'roles' => $roles,
@@ -118,16 +119,16 @@ class UsuarioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUsuarioRequest $request, Usuario $usuario):RedirectResponse
+    public function update(UpdateUsuarioRequest $request, Usuario $usuario): RedirectResponse
     {
         $datos = $request->validated();
 
-        if(empty($datos['password'])){
+        if (empty($datos['password'])) {
             unset($datos['password']);
         }
 
-        $usuario ->update($datos);
-        
+        $usuario->update($datos);
+
         return redirect()
             ->route('usuarios.index')
             ->with('success', 'El usuario se actualizo con exito');
@@ -136,9 +137,10 @@ class UsuarioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Usuario $usuario):RedirectResponse
+    public function destroy(Usuario $usuario): RedirectResponse
     {
         $usuario->delete();
+
         return redirect()
             ->route('usuarios.index')
             ->with('success', 'Usuario eliminado correctamente');

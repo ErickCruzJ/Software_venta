@@ -24,7 +24,7 @@ class UpdateCatMarcaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' =>[
+            'nombre' => [
                 'required',
                 'string',
                 'max: 100',
@@ -38,14 +38,15 @@ class UpdateCatMarcaRequest extends FormRequest
                 'max:255',
                 'regex:/^[\pL0-9\s.,()#%&+\-]*$/u',
             ],
-            'estado'=> [
+            'estado' => [
                 'required',
                 'boolean',
             ],
         ];
     }
+
     public function messages(): array
     {
-        return(neW StoreCatMarcaRequest())->messages();
+        return (new StoreCatMarcaRequest)->messages();
     }
 }

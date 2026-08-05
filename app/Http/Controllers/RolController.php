@@ -14,10 +14,11 @@ class RolController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index():Response
+    public function index(): Response
     {
         $roles = Rol::orderBy('nombre')->get();
-        return Inertia::render('Roles/Index',[
+
+        return Inertia::render('Roles/Index', [
             'roles' => $roles,
         ]);
     }
@@ -25,7 +26,7 @@ class RolController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create():Response
+    public function create(): Response
     {
         return Inertia::render('Roles/Create');
     }
@@ -33,7 +34,7 @@ class RolController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRolRequest $request):RedirectResponse
+    public function store(StoreRolRequest $request): RedirectResponse
     {
         Rol::create($request->validated());
 
@@ -45,7 +46,7 @@ class RolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(rol $rol)
+    public function show(Rol $rol)
     {
         //
     }
@@ -53,19 +54,20 @@ class RolController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Rol $rol):Response
+    public function edit(Rol $rol): Response
     {
-        return Inertia::render('Roles/Edit',[
-            'rol'=> $rol
+        return Inertia::render('Roles/Edit', [
+            'rol' => $rol,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRolRequest $request, Rol $rol):RedirectResponse
+    public function update(UpdateRolRequest $request, Rol $rol): RedirectResponse
     {
         $rol->update($request->validated());
+
         return redirect()
             ->route('roles.index')
             ->with('success', 'Rol actualizado correctamente.');
@@ -74,11 +76,12 @@ class RolController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rol $rol):RedirectResponse
+    public function destroy(Rol $rol): RedirectResponse
     {
         $rol->delete();
+
         return redirect()
             ->route('roles.index')
-            ->with('success','Rol eliminado correctamente.');
+            ->with('success', 'Rol eliminado correctamente.');
     }
 }

@@ -16,12 +16,14 @@ class Rol extends Model
         'descripcion',
         'estado',
     ];
-    protected function casts():array
+
+    protected function casts(): array
     {
-        return[
+        return [
             'estado' => 'boolean',
         ];
     }
+
     public function usuarios(): HasMany
     {
         return $this->hasMany(Usuario::class, 'id_rol');

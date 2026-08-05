@@ -27,12 +27,12 @@ class UpdateUsuarioRequest extends FormRequest
         return [
             'id_empleado' => [
                 'nullable',
-                'exists:empleados,id_empleado', 
-                Rule::unique('usuarios','id_empleado')
-                ->ignore(
-                    $this->route('usuario')->id_usuario,
-                    'id_usuario'
-                ),
+                'exists:empleados,id_empleado',
+                Rule::unique('usuarios', 'id_empleado')
+                    ->ignore(
+                        $this->route('usuario')->id_usuario,
+                        'id_usuario'
+                    ),
             ],
             'id_rol' => [
                 'required',
@@ -42,13 +42,13 @@ class UpdateUsuarioRequest extends FormRequest
                 'required',
                 'string',
                 'min:4',
-                'max:50', 
+                'max:50',
                 'regex:/^[\pL0-9#%&\-]+$/u',
                 Rule::unique('usuarios', 'nombre_usuario')
                     ->ignore($this->route('usuario')->id_usuario, 'id_usuario'),
             ],
             'password' => [
-                'nullable', 
+                'nullable',
                 'confirmed',
                 Password::min(8)
                     ->letters()
@@ -57,8 +57,9 @@ class UpdateUsuarioRequest extends FormRequest
             ],
         ];
     }
-    public function messages():array
+
+    public function messages(): array
     {
-        return (new StoreUsuarioRequest())->messages();
+        return (new StoreUsuarioRequest)->messages();
     }
 }

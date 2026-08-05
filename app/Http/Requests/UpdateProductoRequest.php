@@ -24,11 +24,11 @@ class UpdateProductoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_categoria' =>[
+            'id_categoria' => [
                 'required',
                 'exists: categorias, id_categoria',
             ],
-            'id_cat_marca' =>[
+            'id_cat_marca' => [
                 'required',
                 'exists: cat_marcas, id_cat_marca',
             ],
@@ -36,7 +36,7 @@ class UpdateProductoRequest extends FormRequest
                 'required',
                 'string',
                 'max:50',
-                Rule::unique('productos','codigo')
+                Rule::unique('productos', 'codigo')
                     ->ignore($this->route('producto')->id_producto, 'id_producto'),
             ],
             'nombre' => [
@@ -59,15 +59,15 @@ class UpdateProductoRequest extends FormRequest
             'unidad_medida' => [
                 'required',
                 Rule::ln([
-                    'pz', 
-                    'L', 
-                    'ml', 
-                    'g', 
-                    'kg', 
+                    'pz',
+                    'L',
+                    'ml',
+                    'g',
+                    'kg',
                     'oz',
                 ]),
             ],
-            'presentacion'=>[
+            'presentacion' => [
                 'required',
                 'string',
                 'max:50',
@@ -76,14 +76,15 @@ class UpdateProductoRequest extends FormRequest
             'estado' => [
                 'required',
                 Rule::in([
-                    'Disponible', 
+                    'Disponible',
                     'Agotado',
                 ]),
             ],
         ];
     }
-    public function messages():array
+
+    public function messages(): array
     {
-        return (new StoreProductoRequest())->messages();
+        return (new StoreProductoRequest)->messages();
     }
 }

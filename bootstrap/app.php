@@ -25,11 +25,14 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
+
+        $middleware->append(
+            \App\Http\Middleware\VerifySessionToken::class
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) =>
-                $request->is('api/*') ||
+            fn (Request $request) => $request->is('api/*') ||
                 $request->expectsJson(),
         );
 
@@ -40,7 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
             ) {
                 $sqlState = $exception->errorInfo[0] ?? null;
 
-                if ($sqlState !==null && str_starts_with($sqlState, '08')) {
+                if ($sqlState !== null && str_starts_with($sqlState, '08')) {
                     return response()->view(
                         'errors.database',
                         [],

@@ -20,21 +20,23 @@ class Inventario extends Model
 
     protected function casts(): array
     {
-        return[
-            'fecha_hora'=> 'dateTime'
+        return [
+            'fecha_hora' => 'dateTime',
         ];
     }
+
     public function producto(): BelongsTo
     {
         return $this->belongsTo(Producto::class, 'id_producto');
     }
-    public function usuario (): BelongsTo
+
+    public function usuario(): BelongsTo
     {
-        return $this->belongsTo(Usuario::Class, 'id_usuario');
+        return $this->belongsTo(Usuario::class, 'id_usuario');
     }
-    public function caducidad():HasMany
+
+    public function caducidad(): HasMany
     {
         return $this->hasMany(Caducidad::class, 'id_inventario');
     }
-
 }

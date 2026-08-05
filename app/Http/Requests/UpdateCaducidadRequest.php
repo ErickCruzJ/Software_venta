@@ -53,15 +53,16 @@ class UpdateCaducidadRequest extends FormRequest
             'estado' => [
                 'required',
                 Rule::in([
-                    'Disponible', 
-                    'Vencido', 
+                    'Disponible',
+                    'Vencido',
                     'Vendido',
                 ]),
             ],
         ];
     }
+
     public function messages(): array
     {
-        return(new StoreCaducidadRequest())->messages();
+        return (new StoreCaducidadRequest)->messages();
     }
 }

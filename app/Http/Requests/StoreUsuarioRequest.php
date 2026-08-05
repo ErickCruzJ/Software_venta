@@ -27,8 +27,8 @@ class StoreUsuarioRequest extends FormRequest
         return [
             'id_empleado' => [
                 'nullable',
-                Rule::exists('empleados','id_empleado'),
-                Rule::unique('usuarios','id_empleado'),
+                Rule::exists('empleados', 'id_empleado'),
+                Rule::unique('usuarios', 'id_empleado'),
             ],
             'id_rol' => [
                 'required',
@@ -40,7 +40,7 @@ class StoreUsuarioRequest extends FormRequest
                 'min:4',
                 'max:50',
                 'regex:/^[\pL0-9#%&\-]+$/u',
-                Rule::unique('usuarios','nombre_usuario'),
+                Rule::unique('usuarios', 'nombre_usuario'),
             ],
             'password' => [
                 'required',
@@ -52,9 +52,10 @@ class StoreUsuarioRequest extends FormRequest
             ],
         ];
     }
-    public function messages():array
+
+    public function messages(): array
     {
-        return[
+        return [
             'id_empleado.required' => 'Debe seleccionar un empleado.',
             'id_empleado.exists' => 'El empleado seleccionado no existe.',
 

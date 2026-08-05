@@ -37,15 +37,16 @@ class StoreInventarioRequest extends FormRequest
                 'min:0',
             ],
             'fecha_hora' => [
-                'required', 
+                'required',
                 'date',
             ],
 
         ];
     }
+
     public function messages(): array
     {
-        return[
+        return [
             'id_producto.required' => 'Debe seleccionar un producto.',
             'id_producto.exists' => 'El producto seleccionado no existe.',
 

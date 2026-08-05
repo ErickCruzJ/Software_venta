@@ -18,13 +18,13 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
             $table->foreignId('id_cat_marca')
-                ->constrained('cat_marcas','id_cat_marca')
+                ->constrained('cat_marcas', 'id_cat_marca')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
-            $table->string('codigo',50)->unique();
-            $table->string('nombre',100);
-            $table->string('descripcion',255)->nullable();
-            $table->decimal('contenido',8,2);
+            $table->string('codigo', 50)->unique();
+            $table->string('nombre', 100);
+            $table->string('descripcion', 255)->nullable();
+            $table->decimal('contenido', 8, 2);
             $table->enum('unidad_medida', [
                 'pz',
                 'L',
@@ -33,8 +33,8 @@ return new class extends Migration
                 'kg',
                 'oz',
             ]);
-            $table->string('presentacion',50);
-            $table->enum('estado',[
+            $table->string('presentacion', 50);
+            $table->enum('estado', [
                 'Disponible',
                 'Agotado',
             ])->default('Disponible');

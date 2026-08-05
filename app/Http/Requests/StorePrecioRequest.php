@@ -27,7 +27,7 @@ class StorePrecioRequest extends FormRequest
                 'required',
                 'exists:productos,id_producto',
             ],
-            'precio_venta'  =>[
+            'precio_venta' => [
                 'required',
                 'numeric',
                 'min:0.01',
@@ -42,9 +42,10 @@ class StorePrecioRequest extends FormRequest
             ],
         ];
     }
+
     public function messages(): array
     {
-        return[
+        return [
             'id_producto.required' => 'Debe seleccionar un producto.',
             'id_producto.exists' => 'El producto seleccionado no existe.',
 

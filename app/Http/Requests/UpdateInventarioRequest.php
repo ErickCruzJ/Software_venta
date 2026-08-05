@@ -42,8 +42,9 @@ class UpdateInventarioRequest extends FormRequest
             ],
         ];
     }
-    public function messages():array
+
+    public function messages(): array
     {
-        return(new StoreInvetarioRequest())->messages();
+        return (new StoreInvetarioRequest)->messages();
     }
 }

@@ -16,17 +16,17 @@ return new class extends Migration
             $table->foreignId('id_empleado')
                 ->nullable()
                 ->unique()
-                ->constrained('empleados','id_empleado')
+                ->constrained('empleados', 'id_empleado')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
             $table->foreignId('id_rol')
-                ->constrained('roles','id_rol')
+                ->constrained('roles', 'id_rol')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
-            $table->string('nombre_usuario',50);
+            $table->string('nombre_usuario', 50);
             $table->string('password');
             $table->timestamp('ultima_conexion')->nullable();
-            $table->enum('estado',[
+            $table->enum('estado', [
                 'Conectado',
                 'Desconectado',
                 'Bloqueado',
@@ -44,4 +44,3 @@ return new class extends Migration
         Schema::dropIfExists('usuarios');
     }
 };
-

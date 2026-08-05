@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('nombre', 100);
             $table->string('apellido_paterno', 50);
             $table->string('apellido_materno', 50)->nullable();
-            
-            $table->string('calle',100);
-            $table->string('numero',10);
+
+            $table->string('calle', 100);
+            $table->string('numero', 10);
             $table->string('codigo_postal', 5);
             $table->string('colonia', 100);
             $table->string('alcaldia', 100);
@@ -30,7 +30,7 @@ return new class extends Migration
 
             $table->date('fecha_contratacion');
 
-            $table->string('foto',255)->nullable();
+            $table->string('foto', 255)->nullable();
 
             $table->enum('estado', [
                 'Activo',
@@ -42,7 +42,6 @@ return new class extends Migration
             ])->default('Activo');
 
             $table->date('fecha_baja')->nullable();
-
 
             $table->timestamps();
         });

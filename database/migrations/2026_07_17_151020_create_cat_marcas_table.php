@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('cat_marcas', function (Blueprint $table) {
             $table->id('id_cat_marca');
-            $table->string('nombre',100);
-            $table->string('descripcion',255);
+            $table->string('nombre', 100);
+            $table->string('descripcion', 255);
             $table->boolean('estado')->default(true);
             $table->timestamps();
         });

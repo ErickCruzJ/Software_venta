@@ -20,7 +20,7 @@ type Props = {
 export default function Login({ status, canResetPassword }: Props) {
     return (
         <>
-            <Head title="Log in" />
+            <Head title="Iniciar sesión" />
 
             <PasskeyVerify />
 
@@ -33,18 +33,18 @@ export default function Login({ status, canResetPassword }: Props) {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="nombre_usuario">Nombre de usuario</Label>
                                 <Input
-                                    id="email"
-                                    type="email"
-                                    name="email"
+                                    id="nombre_usuario"
+                                    type="text"
+                                    name="nombre_usuario"
                                     required
                                     autoFocus
                                     tabIndex={1}
-                                    autoComplete="email"
-                                    placeholder="email@example.com"
+                                    autoComplete="username"
+                                    placeholder="Nombre de usuario"
                                 />
-                                <InputError message={errors.email} />
+                                <InputError message={errors.nombre_usuario} />
                             </div>
 
                             <div className="grid gap-2">
@@ -112,6 +112,6 @@ export default function Login({ status, canResetPassword }: Props) {
 }
 
 Login.layout = {
-    title: 'Log in to your account',
-    description: 'Enter your email and password below to log in',
+    title: 'Inicio sesion',
+    description: 'Ingrese su nombre de usuario y contraseña',
 };

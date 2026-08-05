@@ -14,13 +14,13 @@ class CategoriaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index():Response
+    public function index(): Response
     {
         $categorias = Categoria::orderBy('nombre')->get();
 
-       return Inertia::render('Categorias/Index',[
+        return Inertia::render('Categorias/Index', [
             'categorias' => $categorias,
-       ]);
+        ]);
     }
 
     /**
@@ -36,9 +36,9 @@ class CategoriaController extends Controller
      */
     public function store(StoreCategoriaRequest $request): RedirectResponse
     {
-       Categoria::create($request->validated());
+        Categoria::create($request->validated());
 
-       return redirect()
+        return redirect()
             ->route('categorias.index')
             ->with('success', 'Categoria registrada correctamente.');
     }
@@ -56,8 +56,8 @@ class CategoriaController extends Controller
      */
     public function edit(Categoria $categoria): Response
     {
-        return Inertia::render('Categorias/Edit',[
-            'categoria' => $categoria
+        return Inertia::render('Categorias/Edit', [
+            'categoria' => $categoria,
         ]);
     }
 
@@ -67,9 +67,10 @@ class CategoriaController extends Controller
     public function update(UpdateCategoriaRequest $request, Categoria $categoria): RedirectResponse
     {
         $categoria->update($request->validated());
+
         return redirect()
             ->route('categorias.index')
-            ->with('success', 'Categoria actualizada correctamente.');     
+            ->with('success', 'Categoria actualizada correctamente.');
     }
 
     /**
@@ -84,7 +85,3 @@ class CategoriaController extends Controller
             ->with('success', 'Categoria eliminada correctamente.');
     }
 }
-
-
-
-

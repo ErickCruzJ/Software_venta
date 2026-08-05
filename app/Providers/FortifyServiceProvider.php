@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
+use App\Models\Usuario;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -32,6 +34,59 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureActions();
         $this->configureViews();
         $this->configureRateLimiting();
+        Fortify::authenticateUsing(function (Request $request) {
+            logger ()->info('Nombre recibido',[
+                'nombre_usurio'=>$request->nombre_usuario,
+            ]);
+            $usuario = Usuario::whereRaw(
+                'LOWER(nombre_usuario)=?',
+                [strtolower($request->nombre_usuario)]
+            )->first();
+
+            logger()->info('Usuario encontrado',[
+                'usuario' => $usuario,
+            ]);
+
+            if (! $usuario) {
+
+                logger()->warning('Usuario no encontrado.');
+                return null;
+            }
+            $passwordCorrecta = Hash::check(
+                $request->password,
+                $usuario->password
+            );
+
+            logger()->info('Contraseña correcta',[
+                'resultado' => $passwordCorrecta,
+            ]);
+
+            if(! $passwordCorrecta){
+                logger()->warning('Contraseña incorrecata.');
+
+                return null;
+            }
+
+            logger()->info('Login correcto');
+
+           $token = Str::uuid()->toString();
+
+           $usuario->update([
+                'ultima_conexion' => now(),
+                'estado' => 'Conectado',
+                'token_sesion' => $token,
+                'intentos_fallidos' => 0,
+                'bloqueado_hasta' => null,
+           ]);
+
+           $request->session()->put('usuario_token_sesion',$token);
+
+           logger()->info('Token generado', [
+            'token' => $token,
+           ]);
+
+            return $usuario;
+        });
     }
 
     /**

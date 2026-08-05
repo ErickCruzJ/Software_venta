@@ -16,29 +16,29 @@ class Producto extends Model
         'codigo',
         'nombre',
         'descripcion',
-        'contenido', 
+        'contenido',
         'unidad_medida',
         'presentacion',
         'estado',
     ];
-    
+
     public function marca(): BelongsTo
     {
-        return $this->belongsTo(Cat_marca::Class, 'id_cat_marca'); 
+        return $this->belongsTo(Cat_marca::class, 'id_cat_marca');
     }
 
-    public function categoria():BelongsTo
+    public function categoria(): BelongsTo
     {
-        return $this->belongsTo(Categoria::Class, 'id_categoria');
+        return $this->belongsTo(Categoria::class, 'id_categoria');
     }
 
-    public function precio():HasOne
+    public function precio(): HasOne
     {
         return $this->hasOne(Precio::class, 'id_producto');
     }
 
     public function inventario(): HasOne
     {
-        return $this->hasOne(Inventario::Class, 'id_producto');
+        return $this->hasOne(Inventario::class, 'id_producto');
     }
 }

@@ -14,10 +14,11 @@ class InventarioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index():Response
+    public function index(): Response
     {
         $inventarios = Inventario::orderBy('nombre')->get();
-        return Inertia::render('Inventarios/Index',[
+
+        return Inertia::render('Inventarios/Index', [
             'inventarios' => $inventarios,
         ]);
     }
@@ -25,7 +26,7 @@ class InventarioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create():Response 
+    public function create(): Response
     {
         return Inertia::render('Inventarios/Create');
     }
@@ -33,9 +34,10 @@ class InventarioController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInventarioRequest $request):RedirectResponse
+    public function store(StoreInventarioRequest $request): RedirectResponse
     {
         Inventario::create($request->validated());
+
         return redirect()
             ->route('inventarios.index')
             ->with('success', 'Inventario registrado correctamente');
@@ -44,7 +46,7 @@ class InventarioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(inventario $inventario)
+    public function show(Inventario $inventario)
     {
         //
     }
@@ -52,30 +54,32 @@ class InventarioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(inventario $inventario):Response
+    public function edit(Inventario $inventario): Response
     {
-        return Inertia::render('Inventarios/Edit',[
-            'inventario' => $inventario
+        return Inertia::render('Inventarios/Edit', [
+            'inventario' => $inventario,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInventarioRequest $request, inventario $inventario):RedirectResponse
+    public function update(UpdateInventarioRequest $request, Inventario $inventario): RedirectResponse
     {
         $inventario->update($request->validated());
+
         return redirect()
             ->route('inventarios.index')
-            ->with('success','Inventario actualizado correctamente');
+            ->with('success', 'Inventario actualizado correctamente');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(inventario $inventario):RedirectResponse
+    public function destroy(Inventario $inventario): RedirectResponse
     {
         $inventario->delete();
+
         return redirect()
             ->route('inventarios.index')
             ->with('success', 'Inventario actualizado correctamente');

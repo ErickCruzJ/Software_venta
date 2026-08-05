@@ -29,7 +29,7 @@ class StoreCategoriaRequest extends FormRequest
                 'string',
                 'max:100',
                 'regex:/^[\pL0-9\s-]+$/u',
-                Rule::unique('categorias','nombre'),
+                Rule::unique('categorias', 'nombre'),
             ],
             'descripcion' => [
                 'nullable',
@@ -39,17 +39,18 @@ class StoreCategoriaRequest extends FormRequest
             ],
             'estado' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
         ];
     }
+
     public function messages(): array
     {
-        return[
+        return [
             'nombre.required' => 'El nombre de la categoria es obligatorio.',
             'nombre.max' => 'El nombre no puede superar los 100 caracteres.',
             'nombre.regex' => 'Contien caracteres inválidos, solo permite letras, números, espacios y guiones. ',
-            'nombre.unique' =>  'Ya existe una categoria con este nombre. ',
+            'nombre.unique' => 'Ya existe una categoria con este nombre. ',
             'descripcion.max' => 'La descripcion no puede superar los 255 carateres.',
             'descripcion.regex' => 'Contiene caracteres invalidos, solo permite letras, números, espacios,puntos, comas, (, ), #, %, &, + y - ',
             'estado.required' => 'El estado es obligatorio. ',

@@ -27,12 +27,12 @@ class UpdatePrecioRequest extends FormRequest
                 'required',
                 'exists:productos, id_producto',
             ],
-            'precio_venta' =>[
+            'precio_venta' => [
                 'required',
                 'numeric',
                 'min: 0.01',
             ],
-            'fecha' =>[
+            'fecha' => [
                 'required',
                 'date',
             ],
@@ -42,8 +42,9 @@ class UpdatePrecioRequest extends FormRequest
             ],
         ];
     }
-    public function messages():array
+
+    public function messages(): array
     {
-        return(new StorePrecioRequest())->messages();
+        return (new StorePrecioRequest)->messages();
     }
 }

@@ -12,7 +12,7 @@ class CategoriaObserver
      */
     public function created(Categoria $categoria): void
     {
-        Log::info('Categoria creada',[
+        Log::info('Categoria creada', [
             'id_categoria' => $categoria->id_categoria,
             'datos' => $categoria->toArray(),
             'usuario_id' => auth()->id(),
@@ -25,7 +25,7 @@ class CategoriaObserver
      */
     public function updated(Categoria $categoria): void
     {
-        Log::info('Categoria actualizada',[
+        Log::info('Categoria actualizada', [
             'id_categoria' => $categoria->id_categoria,
             'cambios' => $categoria->getChanges(),
             'usuario_id' => auth()->id(),
@@ -40,7 +40,7 @@ class CategoriaObserver
     {
         Log::warning('Categoria eliminada', [
             'id_categoria' => $categoria->id_categoria,
-            'datos'=>$categoria->toArray(),
+            'datos' => $categoria->toArray(),
             'usuario_id' => auth()->id(),
             'fecha' => now()->toDateTimeString(),
         ]);

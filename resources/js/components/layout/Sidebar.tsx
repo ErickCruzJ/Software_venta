@@ -7,6 +7,8 @@ import{
     Shield,
     FileBarChart,
 }from "lucide-react";
+import { router, usePage} from "@inertiajs/react";
+import { Button } from "../ui/button";
 
 interface SidebarProps{
     sidebarOpen: boolean;
@@ -19,32 +21,47 @@ export default function Sidebar({
         {
             icon : <LayoutDashboard size = {20}/>,
             text : "Dashboard",
+            route:"/dashboard",
         },
         {
             icon: <Boxes size={20} />,
             text: "Categorias",
+            route:"/categorias",
         },
         {
             icon:<Package size={20}/>,
             text: "Productos",
+            route: "/productos",
         },
         {
             icon: <ShoppingCart size={20}/>,
             text:"Ventas",
+            route:"/ventas",
         },
         {
             icon:<Users size={20}/>,
             text: "Usuarios",
+            route:"/usuarios",
+        },
+        {
+            icon:<Users size={20}/>,
+            text: "Empleado",
+            route:"/empleados",
         },
         {
             icon: <Shield size={20} />,
             text: "Roles",
+            route:"/roles",
         },
         {
             icon: <FileBarChart size={20} />,
             text:"Reportes",
+            route: "/reportes",
         }
     ];
+
+    const { url } = usePage();
+    
     return(
         <aside
             className={`
@@ -62,17 +79,31 @@ export default function Sidebar({
             </div>
             <nav className="mt-4">
                 {menu.map((item)=>(
-                    <button
+                    <Button
                         key={item.text}
-                        className="flex w-full items-center gap-4 px-6 py-3 transition hover:bgslate-700"
+                        onClick={()=>router.visit(item.route)}
+                        className={`
+                            flex 
+                            w-full
+                            items-center
+                            gap-4
+                            px-6
+                            py-3
+                            transition
+                            ${
+                                url.startsWith(item.route)
+                                  ?"bg-slate-700 text-white"
+                                  :"hover:bg-slate-800 text-slate-200"  
+                            }
+                        `}    
                     >
                         {item.icon}
-                        {sidebarOpen && (
+                        {sidebarOpen &&(
                             <span>
                                 {item.text}
                             </span>
                         )}
-                    </button>
+                    </Button>
                 ))}
             </nav>
         </aside>

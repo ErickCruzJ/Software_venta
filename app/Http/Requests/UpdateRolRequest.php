@@ -32,7 +32,7 @@ class UpdateRolRequest extends FormRequest
                 Rule::unique('roles', 'nombre')
                     ->ignore($this->route('rol')->id_rol, 'id_rol'),
             ],
-            'descripcion' =>[
+            'descripcion' => [
                 'required',
                 'string',
                 'max:255',
@@ -44,8 +44,9 @@ class UpdateRolRequest extends FormRequest
             ],
         ];
     }
+
     public function messages(): array
     {
-        return(new StoreRolRequest())->messages();
+        return (new StoreRolRequest)->messages();
     }
 }

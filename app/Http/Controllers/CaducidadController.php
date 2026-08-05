@@ -18,7 +18,7 @@ class CaducidadController extends Controller
     {
         $caducidad = Caducidad::orderBy('nombre')->get();
 
-        return Inertia::render('Caducidades/Index',[
+        return Inertia::render('Caducidades/Index', [
             'caducidad' => $caducidad,
         ]);
     }
@@ -26,7 +26,7 @@ class CaducidadController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create():Response
+    public function create(): Response
     {
         return Inertia::render('Caducidades/Create');
     }
@@ -34,9 +34,10 @@ class CaducidadController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCaducidadRequest $request):RedirectResponse
+    public function store(StoreCaducidadRequest $request): RedirectResponse
     {
         Caducidad::create($request->validated());
+
         return redirect()
             ->route('caducidades.index')
             ->with('success', 'Caducidad registrada correctamente');
@@ -45,7 +46,7 @@ class CaducidadController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(caducidad $caducidad)
+    public function show(Caducidad $caducidad)
     {
         //
     }
@@ -53,19 +54,20 @@ class CaducidadController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(caducidad $caducidad):Response
+    public function edit(Caducidad $caducidad): Response
     {
-        return Inertia::render('Caducidades/Edit',[
-            'caducidad' => $caducidad
+        return Inertia::render('Caducidades/Edit', [
+            'caducidad' => $caducidad,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCaducidadRequest $request, caducidad $caducidad): RedirectResponse
+    public function update(UpdateCaducidadRequest $request, Caducidad $caducidad): RedirectResponse
     {
-        $caducidad ->update($request->validated());
+        $caducidad->update($request->validated());
+
         return redirect()
             ->route('caducidades.index')
             ->with('success', 'Caducidad actualizada correctamente. ');
@@ -74,9 +76,10 @@ class CaducidadController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(caducidad $caducidad):RedirectResponse
+    public function destroy(Caducidad $caducidad): RedirectResponse
     {
         $caducidad->delete();
+
         return redirect()
             ->route('caducidades.index')
             ->with('success', 'Caducidad eliminada correctamente');

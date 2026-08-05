@@ -14,11 +14,11 @@ class PrecioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index():Response
+    public function index(): Response
     {
         $precios = Precio::orderBy('precio_venta')->get();
 
-        return Inertia::render('Precios/Index',[
+        return Inertia::render('Precios/Index', [
             'precios' => $precios,
         ]);
     }
@@ -26,7 +26,7 @@ class PrecioController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create():Response
+    public function create(): Response
     {
         return Inertia::render('Precios/Create');
     }
@@ -46,7 +46,7 @@ class PrecioController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(precio $precio)
+    public function show(Precio $precio)
     {
         //
     }
@@ -54,19 +54,20 @@ class PrecioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(precio $precio): Response
+    public function edit(Precio $precio): Response
     {
-        return Inertia::render('Precios/Edit',[
-            'precio' => $precio 
+        return Inertia::render('Precios/Edit', [
+            'precio' => $precio,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePrecioRequest $request, precio $precio):RedirectResponse
+    public function update(UpdatePrecioRequest $request, Precio $precio): RedirectResponse
     {
-        $precio -> update($request->validated());
+        $precio->update($request->validated());
+
         return redirect()
             ->route('precios.index')
             ->with('success', 'Precio se actualizo con exito ');
@@ -75,12 +76,12 @@ class PrecioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(precio $precio):RedirectResponse
+    public function destroy(Precio $precio): RedirectResponse
     {
         $precio->delete();
 
         return redirect()
-        ->route('precios.index')
-        ->with('success', 'Precio eliminado correctamente');
+            ->route('precios.index')
+            ->with('success', 'Precio eliminado correctamente');
     }
 }
