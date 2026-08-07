@@ -15,6 +15,7 @@ use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
+use App\Services\Security\SecuritySessionService;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -35,8 +36,9 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureViews();
         $this->configureRateLimiting();
         Fortify::authenticateUsing(function (Request $request) {
+            $security = app(SecuritySessionService::class);
             logger ()->info('Nombre recibido',[
-                'nombre_usurio'=>$request->nombre_usuario,
+                'nombre_usuario'=>$request->nombre_usuario,
             ]);
             $usuario = Usuario::whereRaw(
                 'LOWER(nombre_usuario)=?',
@@ -69,21 +71,12 @@ class FortifyServiceProvider extends ServiceProvider
 
             logger()->info('Login correcto');
 
-           $token = Str::uuid()->toString();
+            $security = app(SecuritySessionService::class);
 
-           $usuario->update([
-                'ultima_conexion' => now(),
-                'estado' => 'Conectado',
-                'token_sesion' => $token,
-                'intentos_fallidos' => 0,
-                'bloqueado_hasta' => null,
-           ]);
-
-           $request->session()->put('usuario_token_sesion',$token);
-
-           logger()->info('Token generado', [
-            'token' => $token,
-           ]);
+            $security->registrarLogin(
+                $usuario,
+                $request
+            );
 
             return $usuario;
         });

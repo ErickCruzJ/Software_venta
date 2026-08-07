@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Sercices\Security;
+namespace App\Services\Security;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
-use Illiminate\Support\Carbon;
-use Illiminate\Support\Str;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
-class TolenGenerator 
+class ToKenGenerator 
 {
     /*Genera un SST*/
-    public function generarte(
+    public function generate(
         Usuario $usuario,
         Request $request
     ):string{
@@ -21,14 +21,14 @@ class TolenGenerator
         ];
         $issuedAt = now();
         $expiresAt = now()->addMinutes(
-            config('security.token_expiration')
+           (int) config('security.token_expiration')
         );
 
-        $playload = [
+        $payload = [
             'sid' => Str::uuid()->toString(),
             'uid' => $usuario->id_usuario,
             'usr' => $usuario->nombre_usuario,
-            'rol' => $usuario->id_rol 
+            'rol' => $usuario->id_rol,
             'iat' => $issuedAt->timestamp,
             'exp' => $expiresAt->timestamp,
             'ip'  => $request->ip(),
@@ -41,23 +41,23 @@ class TolenGenerator
 
         $headerEncoded = $this->encode($header);
 
-        $playloadEncoded = $this->encode($playload);
+        $payloadEncoded = $this->encode($payload);
 
         $signature = hash_hmac(
             'sha256',
-            "{$headerEncoded}.{$playloadEncoded}",
+            "{$headerEncoded}.{$payloadEncoded}",
             config('app.key')
         );
-        rerunr "{headerEncoded}.{$payloadEncoded}.{$signature}";
+        return "{$headerEncoded}.{$payloadEncoded}.{$signature}";
     }
 
-    privare function encode(array $data): string
+    private function encode(array $data): string
     {
         return rtrim(
             strtr(
                 base64_encode(json_encode($data)),
                 '+/',
-            '   -_'
+                '-_'
             ),
             '=' 
         );
