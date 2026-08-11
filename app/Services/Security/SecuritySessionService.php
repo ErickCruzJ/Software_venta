@@ -18,10 +18,24 @@ class SecuritySessionService
         Request $request
     ):string 
     {
+
+        if($request->session()->has('sst_token')){
+            logger()->warning('YA EXISTE SST_TOKKEN EN ESTA SESION');
+        }
+          $executionId = (string) Str::uuid();
+
+    logger()->info('===== REGISTRAR LOGIN =====', [
+        'execution_id' => $executionId,
+        'usuario_id' => $usuario->id_usuario,
+        'session_id' => $request->session()->getId(),
+    ]);
         $token = $this->generator->generate(
             $usuario, 
             $request
         );
+        logger()->info('SST generador',[
+            'token'=>$token,
+        ]);
         $this->storage->store(
             $usuario,
             $token

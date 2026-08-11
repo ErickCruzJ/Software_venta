@@ -5,28 +5,28 @@ class TokenValidator
 {
     /*Valida la firma del SST */
 
-    public function validate(string $token): bool
-    {
-        $parts = explode('.', $token);
+   public function validate(string $token): bool
+   {
+        $parts = explode ('.', $token);
 
-        if(count($parts) !== 3){
+        if (count($parts) !== 3 ){
             return false;
         }
-
         [$header, $payload, $signature] = $parts;
 
         $expectedSignature = hash_hmac(
             'sha256',
             "{$header}.{$payload}",
-            confing('app.key')
+            config('app.key')
         );
+
         return hash_equals(
             $expectedSignature,
             $signature
         );
-    }
+   }
     /*Obtiene el payload */
-    public function payload('.', $token): ?array
+    public function payload(string $token): ?array
     {
         $parts = explode('.', $token);
 
@@ -51,6 +51,11 @@ class TokenValidator
         if(!$payload){
             return true;
         }
-        return now ()->timestamp > $payload['exp'];
+
+        if(!isset($payload['exp'])){
+            return true;
+        }
+
+        return now()->timestamp > $payload['exp'];
     }
 }

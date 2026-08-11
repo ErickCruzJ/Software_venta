@@ -15,7 +15,6 @@ use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
-use App\Services\Security\SecuritySessionService;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -36,25 +35,31 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureViews();
         $this->configureRateLimiting();
         Fortify::authenticateUsing(function (Request $request) {
-            $security = app(SecuritySessionService::class);
-            logger ()->info('Nombre recibido',[
-                'nombre_usuario'=>$request->nombre_usuario,
+
+            logger()->info('======AUTHENTICATE USING======',[
+                'session_id' => $request->session()->getId(),
+                'method' => $request->method(),
+                'url' => $request->fullUrl(),
+            ]);
+
+            logger()->info('Nombre recibido',[
+                'nombre_usuario' => $request->nombre_usuario,
             ]);
             $usuario = Usuario::whereRaw(
-                'LOWER(nombre_usuario)=?',
+                'LOWER(nombre_usuario) = ?',
                 [strtolower($request->nombre_usuario)]
             )->first();
 
             logger()->info('Usuario encontrado',[
                 'usuario' => $usuario,
             ]);
+            if(! $usuario){
+                logger()->warning('usuario no encontrado.');
 
-            if (! $usuario) {
-
-                logger()->warning('Usuario no encontrado.');
                 return null;
             }
-            $passwordCorrecta = Hash::check(
+
+            $passwordCorrecta  = Hash::check(
                 $request->password,
                 $usuario->password
             );
@@ -64,19 +69,17 @@ class FortifyServiceProvider extends ServiceProvider
             ]);
 
             if(! $passwordCorrecta){
-                logger()->warning('Contraseña incorrecata.');
+                logger()->warning('Contraseña incorrecta.');
 
                 return null;
             }
 
             logger()->info('Login correcto');
 
-            $security = app(SecuritySessionService::class);
-
-            $security->registrarLogin(
-                $usuario,
-                $request
-            );
+            logger()->info('======= AUTHENTICATE USING RETURN=======',[
+                'usuario_id' => $usuario->id_usuario,
+                'session_id' => $request->session()->getId(),
+            ]);
 
             return $usuario;
         });

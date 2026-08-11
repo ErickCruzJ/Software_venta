@@ -22,7 +22,7 @@ export default function Login({ status, canResetPassword }: Props) {
         <>
             <Head title="Iniciar sesión" />
 
-            <PasskeyVerify />
+            {/*<PasskeyVerify />*/}
 
             <Form
                 {...store.form()}
