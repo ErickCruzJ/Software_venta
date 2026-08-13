@@ -36,15 +36,6 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
         Fortify::authenticateUsing(function (Request $request) {
 
-            logger()->info('======AUTHENTICATE USING======',[
-                'session_id' => $request->session()->getId(),
-                'method' => $request->method(),
-                'url' => $request->fullUrl(),
-            ]);
-
-            logger()->info('Nombre recibido',[
-                'nombre_usuario' => $request->nombre_usuario,
-            ]);
             $usuario = Usuario::whereRaw(
                 'LOWER(nombre_usuario) = ?',
                 [strtolower($request->nombre_usuario)]
@@ -53,11 +44,43 @@ class FortifyServiceProvider extends ServiceProvider
             logger()->info('Usuario encontrado',[
                 'usuario' => $usuario,
             ]);
-            if(! $usuario){
-                logger()->warning('usuario no encontrado.');
+
+            if(!$usuario){
+                logger()->warning('Usuario no encontrado.');
 
                 return null;
             }
+
+            /*Veriuficar bloqueo */
+            
+            if($usuario->bloqueado_hasta !== null&&
+                now()->lessThan($usuario->bloqueado_hasta)
+            ){
+                logger()->warning('Usuario bloqueado',[
+                    'usuario_id' => $usuario->id_usuario,
+                    'bloqueado_hasta' => $usuario->bloqueado_hasta,
+                ]);
+                return null;
+                
+            }
+
+            /*Si el bloqueo ya termino */
+
+            if(
+                $usuario->bloqueado_hasta !== null &&
+                now()->greaterThanOrEqualTo($usuario->bloqueado_hasta)
+            ){
+                $usuario->update([
+                    'intentos_fallidos' => 0,
+                    'bloqueado_hasta' => null,
+                ]);
+
+                logger()->info('Bloqueo terminado', [
+                    'usuario_id' => $usuario->id_usuario,
+                ]);
+            }
+
+            /*Verificar contraseña */
 
             $passwordCorrecta  = Hash::check(
                 $request->password,
@@ -69,17 +92,39 @@ class FortifyServiceProvider extends ServiceProvider
             ]);
 
             if(! $passwordCorrecta){
-                logger()->warning('Contraseña incorrecta.');
+
+                $usuario->increment('intentos_fallidos');
+
+                logger()->warning('Intentos de contraseña incorrecta',[
+                    'usuario_id' => $usuario->id_usuario,
+                    'intentos_fallidos' => $usuario->fresh()->intentos_fallidos,
+                ]);
+
+                $usuario->refresh();
+
+                if($usuario->intentos_fallidos >= 5){
+
+                    $usuario->update([
+                        'bloqueado_hasta' => now()->addMinutes(10),
+                    ]);
+
+                    logger()->warning('USUARIO BLOQUEADO',[
+                        'usuario_id' => $usuario->id_usuario,
+                        'bloqueado_hasta' => $usuario->bloqueado_hasta,
+                    ]);
+                }
 
                 return null;
             }
 
-            logger()->info('Login correcto');
+            /*Login correcto */
 
-            logger()->info('======= AUTHENTICATE USING RETURN=======',[
-                'usuario_id' => $usuario->id_usuario,
-                'session_id' => $request->session()->getId(),
+            $usuario->update([
+                'intentos_fallidos' => 0,
+                'bloqueado_hasta' => null,
             ]);
+
+            logger()->info('Login correcto');
 
             return $usuario;
         });

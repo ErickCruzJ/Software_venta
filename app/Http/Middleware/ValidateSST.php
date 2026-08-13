@@ -7,6 +7,7 @@ use App\Services\Security\TokenStorage;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ValidateSST
 {
@@ -22,6 +23,7 @@ class ValidateSST
 
         $token = $request->session()->get('sst_token');
 
+
         if(!$token){
             return redirect('/login');
         }
@@ -29,25 +31,22 @@ class ValidateSST
         $validSignature = $this->validator->validate($token);
 
         if(!$validSignature){
-            $request->session()->forget('sst_token');
 
-            return redirect('/login');
+            return $this->rejectSession($request);
         }
-
+        
         $expired = $this->validator->expired($token);
 
         if($expired){
-            $request->session()->forget('sst_token');
 
-            return redirect('/login');
+            return $this->rejectSession($request);
         }
 
         $usuario = $request->user();
 
         if(!$usuario){
-            $request->session()->forget('sst_token');
 
-            return redirect('/login');
+            return $this->rejectSession($request);
         }
         $tokenValido = $this->storage->verify(
             $usuario,
@@ -59,10 +58,21 @@ class ValidateSST
             'valid' => $tokenValido,
         ]);
         if(!$tokenValido){
-            $request->session()->forget('sst_token');
 
-            return redirect('/login');
+            return $this->rejectSession($request);
         }
         return $next($request);
    }
+    private function rejectSession(Request $request)
+        {
+            Auth::logout();
+
+            $request->session()->forget('sst_token');
+
+            $request->session()->invalidate();
+
+            $request->session()->regenerateToken();
+
+            return redirect('/login');
+        }
 }
