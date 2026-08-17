@@ -1,13 +1,22 @@
 <?php
+use App\Http\Controllers\SetupController;
 
+use App\Models\Usuario;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function(){
+    if(Usuario::exists()){
+        return redirect()->route('login');
+    }
+    return redirect()->route('setup');
+})->name('home');
 
-Route::inertia('/', 'welcome')->name('home');
+Route::get('/setup',[SetupController::class, 'index'])->name('setup');
+Route::post('/setup', [SetupController::class, 'store'])->name('setup.store');
 
 Route::middleware(['auth', 'verified', 'sst'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
