@@ -50,11 +50,11 @@ Route::middleware(['auth', 'verified', 'sst'])->group(function () {
     Route::put('/usuarios/{usuario}', [UsuarioController::class, 'update'])->name('usuarios.update');
     Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
 
-    Route::get('/test-sst',function(){
+    Route::get('/test-permission',function(){
         return response()->json([
-            'mensaje' => 'SST valido, puede entrar',
+            'mensaje' => 'Tienes permiso para acceder',
         ]);
-    })->name('test.sst');
+    })->middleware('permission:usuarios.eliminar');
 });
 
 require __DIR__.'/settings.php';

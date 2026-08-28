@@ -6,6 +6,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Modelo de Autentificación de Usuarios.
+ * 
+ * Representa la entidad de usuario en la base de datos para la autenticación en la plataforma.
+ * Mantiene el estado de acceso, credenciales, control de bloqueo por seguridad
+ * y la vinculación con la información del empleado y sus permiso (rol).
+ * 
+ * @property int $id_e
+ */
+
 class Usuario extends Authenticatable
 {
     protected $primaryKey = 'id_usuario';
@@ -35,6 +45,18 @@ class Usuario extends Authenticatable
     public function rol(): BelongsTo
     {
         return $this->belongsTo(Rol::class, 'id_rol');
+    }
+
+    public function tienePermiso(string $codigo): bool 
+    {
+        if(!$this->rol){
+            return flase;
+        }
+        return $this->rol
+            ->permisos()
+            ->where('codigo', $codigo)
+            ->where('estado', true)
+            ->exists();
     }
 
     public function empleado(): BelongsTo
